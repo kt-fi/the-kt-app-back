@@ -52,7 +52,7 @@ const loginGoogle = async ( req, res, next )  =>{
 }
 
 
-const loginEmail = async ( req, res, next ) => {
+const signupEmail = async ( req, res, next ) => {
     let { userName, email, password }= req.body;
     let user;
     let saltRounds = 10;
@@ -95,10 +95,51 @@ const loginEmail = async ( req, res, next ) => {
         const error = new HttpError('Error Creating JWT', 500)
         return res.send(error)
     }
-    
-
 }
 
+const loginEmail = async (req, res, next) => {
+    let userData = req.body;
+    let foundUser;
+    let checkPassword
+    try {
+        foundUser = await User.findOne({email: userData.email});
+   
+        if(!foundUser){
+             res.json({msg: 'No User matches email address, please sign up'})
+             return;
+        }
+        try {
+            checkPassword = await bcrypt.compare(userData.password, foundUser.password)
+        }catch(err){
+            const error = new HttpError('Failed To Match Passwords', 500)
+            return res.send(error.message)
+        }
+        try {
+            if(checkPassword == true){
+
+                try {
+                    let payload = { subject: foundUser._id};
+                    let token = jwt.sign(payload, process.env.JWT_SECRET);
+                     res.json({foundUser, token})
+                }catch(err){
+                    const error = new HttpError('Error Creating JWT', 500)
+                    return res.send(error)
+                }
+            //  return res.json(foundUser)
+        }else{
+            const error = new HttpError('A problem occured logging in, please check credentials and try again', 500)
+            return res.send(error.message)
+        }
+        }catch(err){
+            const error = new HttpError('Unknown Server Error', 500)
+            return res.send(error)
+        }
+    }catch(err){
+        const error = new HttpError('Unknown Server Error', 500)
+        return res.send(error)
+    }
+}
 
  exports.loginGoogle = loginGoogle;
+ exports.signupEmail = signupEmail;
  exports.loginEmail = loginEmail;
