@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../schemas/userSchema');
 const HttpError = require('../httpError')
+const { validationResult } = require('express-validator');
 
 
 const loginGoogle = async ( req, res, next )  =>{
@@ -19,7 +20,8 @@ const loginGoogle = async ( req, res, next )  =>{
              user = userExists;
         }catch(err){
             const error = new HttpError('Failed To Find User', 500)
-            return res.send(error)
+            res.json({msg: error.message});
+            return next(error)
         }
       
        }else {
@@ -28,16 +30,19 @@ const loginGoogle = async ( req, res, next )  =>{
                     userId: uuid(),
                     userName: newUser.name,
                     email: newUser.email,
+                    pets: []
         })
             user.save()
         }catch(err){
             const error = new HttpError('Failed To Save New User', 500)
-            return res.send(error)
+            res.json({msg: error.message});
+            return next(error)
         }
        }
     }catch(err) {
         const error = new HttpError('Failed To Save New User', 400)
-        return res.send(error)
+        res.json({msg: error.message});
+        return next(error)
     }
      
     try {
@@ -47,21 +52,31 @@ const loginGoogle = async ( req, res, next )  =>{
     }catch(err){
         console.log(err)
         const error = new HttpError('Error Creating JWT', 500)
-        return res.send(error)
+        return next(error)
     }
 }
 
 
 const signupEmail = async ( req, res, next ) => {
-    let { userName, email, password }= req.body;
+    let errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        console.log(errors)
+        return res.json({msg:"errors exist in your sign up form please check all required inpts"}).status(422)
+     }
+
+    let { userName, email, password } = req.body;
     let user;
     let saltRounds = 10;
     let passwordHashed;
+
     try {
         let userExists = await User.findOne({email});
         if(userExists){
-            res.json({msg: 'User Already Exists, Please Try again with another email.'});
-            return;
+            const error = new HttpError('User Already Exists, Please Try again with another email', 500)
+            res.json({msg: error.message});
+            return  next(error)
+
         }else{
             try{
                 passwordHashed = await bcrypt.hash(password, saltRounds)
@@ -70,21 +85,24 @@ const signupEmail = async ( req, res, next ) => {
             userId: uuid(),
             userName,
             email,
-            password: passwordHashed
+            password: passwordHashed,
+            pets: []
         });
 
         user.save();
 
             }catch(err){
-                res.json({msg: 'User Already Exists, Please Try again with another email.'});
-                return;
+                const error = new HttpError('Failed To Save New User', 500)
+                res.json({msg: error.message});
+                return next(error)
             }
         }
 
     }catch(err){
         console.log(err)
         const error = new HttpError('Failed To Save New User', 500)
-        return res.send(error)
+        res.json({msg: error.message});
+        return next(error)
     }
 
     try {
@@ -93,7 +111,8 @@ const signupEmail = async ( req, res, next ) => {
          res.json({user, token})
     }catch(err){
         const error = new HttpError('Error Creating JWT', 500)
-        return res.send(error)
+            res.json({msg: error.message});
+            return next(error)
     }
 }
 
@@ -110,9 +129,16 @@ const loginEmail = async (req, res, next) => {
         }
         try {
             checkPassword = await bcrypt.compare(userData.password, foundUser.password)
+
+            if(!checkPassword) {
+                const error = new HttpError('Password or email incorrect, please try again', 500)
+                res.json({msg: error.message});
+                return  next(error)
+            }
         }catch(err){
-            const error = new HttpError('Failed To Match Passwords', 500)
-            return res.send(error.message)
+            const error = new HttpError('Password or email incorrect, please try again', 500)
+            res.json({msg: error.message});
+            return  next(error)
         }
         try {
             if(checkPassword == true){
@@ -123,23 +149,60 @@ const loginEmail = async (req, res, next) => {
                      res.json({foundUser, token})
                 }catch(err){
                     const error = new HttpError('Error Creating JWT', 500)
-                    return res.send(error)
+                    res.json({msg: error.message});
+                    return next(error)
                 }
             //  return res.json(foundUser)
         }else{
             const error = new HttpError('A problem occured logging in, please check credentials and try again', 500)
-            return res.send(error.message)
+            res.json({msg: error.message});
+            return next(error.message)
         }
         }catch(err){
             const error = new HttpError('Unknown Server Error', 500)
-            return res.send(error)
+            return next(error)
         }
     }catch(err){
         const error = new HttpError('Unknown Server Error', 500)
-        return res.send(error)
+        return next(error)
     }
+}
+
+const checkLoginWithJWT = async ( req, res, next ) => {
+
+    let userId;
+    let user;
+try {
+    let token = req.headers.authorization.split(' ')[1];
+    if(token === null) {
+        return res.status(401).send('Unautorized Request3')
+    } else{
+          jwt.verify(token, process.env.JWT_SECRET, (err, foundUserId) => {
+        if(err){
+            return res.status(401).send('Unautorized Request4')
+        }
+        userId = foundUserId.subject;
+    });
+    }
+  
+}catch(err){
+    console.log(err)
+}
+
+if(userId){
+    try {
+    user = await User.findOne({_id: userId})
+    return res.json(user)
+}catch(err){
+    console.log(err)
+}
+}
+
+
+   
 }
 
  exports.loginGoogle = loginGoogle;
  exports.signupEmail = signupEmail;
  exports.loginEmail = loginEmail;
+ exports.checkLoginWithJWT = checkLoginWithJWT;

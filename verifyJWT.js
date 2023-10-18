@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) =>{
 
+    let payload;
+
     if(req.headers.authorization === undefined){
         return res.status(401).send('Unautorized Request')
     }
@@ -13,10 +15,11 @@ const verifyToken = (req, res, next) =>{
     if(token === null) {
         return res.status(401).send('Unautorized Request')
     }
-    let payload = jwt.verify(token, process.env.JWT_SECRET, (err, userId) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, userId) => {
         if(err){
             return res.status(401).send('Unautorized Request')
         }
+        payload = userId
     });
     if(!payload){
         return res.status(401).send('Unautorized Request')
