@@ -12,7 +12,7 @@ const loginGoogle = async ( req, res, next )  =>{
   
 
     try{
-        let userExists
+        let userExists;
         userExists = await User.findOne({email: newUser.email})
        
        if(userExists) {
@@ -32,17 +32,17 @@ const loginGoogle = async ( req, res, next )  =>{
                     email: newUser.email,
                     pets: []
         })
-            user.save()
+            user.save();
         }catch(err){
             const error = new HttpError('Failed To Save New User', 500)
             res.json({msg: error.message});
-            return next(error)
+            return next(error);
         }
        }
     }catch(err) {
         const error = new HttpError('Failed To Save New User', 400)
         res.json({msg: error.message});
-        return next(error)
+        return next(error);
     }
      
     try {
@@ -175,7 +175,7 @@ const checkLoginWithJWT = async ( req, res, next ) => {
 try {
     let token = req.headers.authorization.split(' ')[1];
     if(token === null) {
-        return res.status(401).send('Unautorized Request3')
+        return res.status(401).send('Unautorized Request')
     } else{
           jwt.verify(token, process.env.JWT_SECRET, (err, foundUserId) => {
         if(err){

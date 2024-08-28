@@ -78,6 +78,11 @@ const getPetsByUserId = async (req, res, next) => {
 }
 
 
+const updatePetInfo = async ( req, res, next ) => {
+ // ADD UPDATE CODE
+}
+
+
 
 // TEST METHOD -----------------------------------------------------------------------
 
@@ -106,6 +111,7 @@ const deleteAllPets = async (req, res, next) => {
 
 exports.addNewPet = addNewPet;
 exports.getPetsByUserId = getPetsByUserId;
+exports.updatePetInfo = updatePetInfo;
 
 exports.deleteAllPets = deleteAllPets;
 exports.getAllPets = getAllPets;

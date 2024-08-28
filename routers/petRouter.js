@@ -6,12 +6,17 @@ const { verifyToken } = require('../verifyJWT')
 
 
 router.post('/newPet', verifyToken,
-check('petName').notEmpty().isLength({min: 3}),
-check('age').isNumeric().notEmpty(),
-check('description').notEmpty().isLength({min:10}),
-petController.addNewPet);
+    check('petName').notEmpty().isLength({min: 3}),
+    check('age').isNumeric().notEmpty(),
+    check('description').notEmpty().isLength({min:10}),
+    petController.addNewPet);
 router.get('/getPetsByUserId/:userId', verifyToken, petController.getPetsByUserId)
 router.get('/getAllPets', verifyToken, petController.getAllPets)
+
+router.get('/updatePetInfo', verifyToken, petController.updatePetInfo, 
+    check('petName').notEmpty().isLength({min: 3}),
+    check('age').isNumeric().notEmpty(),
+    check('description').notEmpty().isLength({min:10}),)
 
 router.delete('/deleteAllPets', petController.deleteAllPets)
 
