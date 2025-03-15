@@ -7,7 +7,7 @@ const { verifyToken } = require('../verifyJWT')
 
 router.post('/newPet', verifyToken,
     check('petName').notEmpty().isLength({min: 3}),
-    check('age').isNumeric().notEmpty(),
+    check('age').isNumeric({max:30}).notEmpty(),
     check('description').notEmpty().isLength({min:10}),
     petController.addNewPet);
 router.get('/getPetsByUserId/:userId', verifyToken, petController.getPetsByUserId)

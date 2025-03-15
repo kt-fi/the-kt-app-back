@@ -9,8 +9,8 @@ const addNewPet = async (req, res, next) => {
     let errors = validationResult(req);
 
     if(!errors.isEmpty()){
-        // return res.json({msg:"errors exist in your sign up form please check all required inpts"}).status(422)
-        let error = new HttpError('Not Correct', 400)
+        let error = new HttpError("There is an error in the form please check and try again!", 400)
+        res.json({msg: error.message}).status(422)
         return next(error)
      }
 
@@ -48,7 +48,7 @@ const addNewPet = async (req, res, next) => {
                 res.json(newPet)
             }
         }catch(err){
-            const error = new HttpError('Error adding Pet to user', 500);
+            const error = new HttpError('Error Adding Pet, please try again!', 500);
             res.json({msg: error.message});
             return next(error) 
         }

@@ -15,8 +15,8 @@ authController.signupEmail);
 router.post('/auth/loginEmail', 
 check('email').isEmail(), 
 check('password').isLength({min:6}),
- authController.loginEmail)
+authController.loginEmail)
 
- router.get('/auth/checkLoginWithJWT', authController.checkLoginWithJWT)
+router.get('/auth/checkLoginWithJWT', authController.checkLoginWithJWT)
 
 module.exports = router;
