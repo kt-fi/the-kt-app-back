@@ -65,10 +65,12 @@ const signupEmail = async (req, res, next) => {
       .status(422);
   }
 
-  let { userName, email, password, telephone, location } = req.body;
+  let { userName, email, password, telephone } = req.body;
   let user;
   let saltRounds = 10;
   let passwordHashed;
+
+  
 
   try {
     let userExists = await User.findOne({ email });
@@ -89,19 +91,20 @@ const signupEmail = async (req, res, next) => {
           email,
           password: passwordHashed,
           telephone,
-          location,
           pets: [],
         });
 
         user.save();
       } catch (err) {
         const error = new HttpError("An Error has occured and user could not be created, please try again!!", 500);
+        console.log(err)
         res.json({ msg: error.message });
         return next(error);
       }
     }
   } catch (err) {
     const error = new HttpError("An Error has occured and user could not be created, please try again!!", 500);
+    console.log(err)
     res.json({ msg: error.message });
     return next(error);
   }
@@ -119,19 +122,21 @@ const signupEmail = async (req, res, next) => {
 
 const loginEmail = async (req, res, next) => {
   let { email, password } = req.body;
-  let foundUser;
+  let user;
   let checkPassword;
   let token;
 
-  try {
-    foundUser = await User.findOne({ email: email });
 
-    if (!foundUser) {
+
+  try {
+    user = await User.findOne({ email: email });
+
+    if (!user) {
       res.json({ msg: "No User matches email address, please sign up" });
       return;
     }
     try {
-      checkPassword = await bcrypt.compare(password, foundUser.password);
+      checkPassword = await bcrypt.compare(password, user.password);
 
       if (!checkPassword) {
         const error = new HttpError(
@@ -152,7 +157,7 @@ const loginEmail = async (req, res, next) => {
     try {
       if (checkPassword == true) {
         try {
-          let payload = { subject: foundUser._id };
+          let payload = { subject: user._id };
           token = jwt.sign(payload, process.env.JWT_SECRET);
          
         } catch (err) {
@@ -176,13 +181,14 @@ const loginEmail = async (req, res, next) => {
     const error = new HttpError("Unknown Server Error", 500);
     return next(error);
   }
-  res.json({ foundUser, token });
+  res.json({ user, token });
 };
 
 const checkLoginWithJWT = async (req, res, next) => {
   let userId;
   let user;
   try {
+    
     let token = req.headers.authorization.split(" ")[1];
     if (token === null) {
       return res.status(401).send("Unautorized Request");
@@ -195,7 +201,7 @@ const checkLoginWithJWT = async (req, res, next) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    console.log("Couldnt Find Token");
   }
 
   if (userId) {
