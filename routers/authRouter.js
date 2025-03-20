@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/auth/google', authController.loginGoogle);
 
 router.post('/auth/signupEmail', 
-check('userName').notEmpty().isLength({min: 5}),
+check('userName').notEmpty().isLength({min: 3}),
 check('email').notEmpty().isEmail(),
 check('password').notEmpty().isLength({min:6}),
 authController.signupEmail);

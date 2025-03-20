@@ -49,6 +49,7 @@ const loginGoogle = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     const error = new HttpError("Error Creating JWT", 500);
+    res.json({ msg: error.message });
     return next(error);
   }
 };
@@ -58,10 +59,7 @@ const signupEmail = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     console.log(errors);
-    return res
-      .json({
-        msg: "There is an error(s) in your form, please check and try again",
-      })
+    return res.json({msg: "There is an error(s) in your form, please check and try again",})
       .status(422);
   }
 
@@ -76,7 +74,7 @@ const signupEmail = async (req, res, next) => {
     let userExists = await User.findOne({ email });
     if (userExists) {
       const error = new HttpError(
-        "User Already Exists, Please Try again with another email address",
+        "User Already Exists, Please Try again with another Email address",
         500
       );
       res.json({ msg: error.message });
