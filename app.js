@@ -6,8 +6,10 @@ require('dotenv').config()
 let http = require("http").Server(app);
 global.io = require('socket.io')(http);
 
+const cloudinary = require('cloudinary').v2;
+
 const appRouter = require('./routers/authRouter')
-const petRouter = require('./routers/petRouter')
+const petRouter = require('./routers/petRouter');
 
 app.use(cors());
 app.use(express.json({limit: '100mb', extended: true}));

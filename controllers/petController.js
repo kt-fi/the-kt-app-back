@@ -5,29 +5,34 @@ const { uuid } = require('uuidv4');
 const mongoose = require('mongoose')
 const { validationResult } = require('express-validator')
 
+const cloudinary = require('../utils/cloudinary');
+
 const addNewPet = async (req, res, next) => {
-    let errors = validationResult(req);
+    // let errors = validationResult(req);
 
-    if(!errors.isEmpty()){
-        let error = new HttpError("There is an error in the form please check and try again!", 400)
-        res.json({msg: error.message}).status(422)
-        return next(error)
-     }
+    // if(!errors.isEmpty()){
+    //     let error = new HttpError(errors)
+    //     console.log(errors)
+    //     res.json({msg: error.message}).status(422)
+    //     return next(error)
+    //  }
 
-   const { userId, petName, age, description, otherInfo, image, status } = req.body;
-   
+   const { userId, petId, petName, age, description, otherInfo, image, status } = req.body;
+
    let user;
    let newPet;
+
+   let randomId = uuid();
 
    try {
         newPet = await new Pet({
             userId,
-            petId: uuid(),
+            petId: petId,
             petName,
             age,
             description,
             otherInfo,
-            image,
+            image: `https://res.cloudinary.com/daxrovkug/image/upload/v1746460136/ktApp-petMainPic/${petId}.jpg`,
             status
         })
         
@@ -77,6 +82,17 @@ const getPetsByUserId = async (req, res, next) => {
     }
 }
 
+const uploadPhoto = async (req, res, next) => {
+    if (!req.file) {
+        console.error("No file received");
+        return res.status(400).json({ msg: "No file uploaded" });
+      }
+      console.log("File uploaded successfully:", req.file);
+      res.json({
+        msg: "File uploaded successfully",
+        fileUrl: req.file.path, // Cloudinary URL
+      });
+}
 
 const updatePetInfo = async ( req, res, next ) => {
  // ADD UPDATE CODE
@@ -112,6 +128,7 @@ const deleteAllPets = async (req, res, next) => {
 exports.addNewPet = addNewPet;
 exports.getPetsByUserId = getPetsByUserId;
 exports.updatePetInfo = updatePetInfo;
+exports.uploadPhoto = uploadPhoto;
 
 exports.deleteAllPets = deleteAllPets;
 exports.getAllPets = getAllPets;

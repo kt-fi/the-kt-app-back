@@ -4,6 +4,9 @@ const router = express.Router();
 const { check } = require('express-validator')
 const { verifyToken } = require('../verifyJWT')
 
+const upload = require("../utils/multerConfig");
+
+router.post('/uploadPhoto', upload.single('image'), petController.uploadPhoto)
 
 router.post('/newPet', verifyToken,
     check('petName').notEmpty().isLength({min: 3}),

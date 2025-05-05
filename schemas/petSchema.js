@@ -10,7 +10,7 @@ let petSchema = new Schema({
     description: { type: String, require: true },
     otherInfo: { type: String, require: false },
     image: { type: String, require: false },
-    status: {type: String, require: true} 
+    status: {type: String, require: true},
 })
 
 module.exports = mongoose.model('Pet', petSchema)

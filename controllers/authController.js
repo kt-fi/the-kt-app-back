@@ -8,7 +8,6 @@ const { validationResult } = require("express-validator");
 const loginGoogle = async (req, res, next) => {
   let newUser = req.body;
   let user;
-
   try {
     let userExists;
     userExists = await User.findOne({ email: newUser.email });
