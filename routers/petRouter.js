@@ -14,7 +14,9 @@ router.post('/newPet', verifyToken,
     check('description').notEmpty().isLength({min:10}),
     petController.addNewPet);
 router.get('/getPetsByUserId/:userId', verifyToken, petController.getPetsByUserId)
-router.get('/getAllPets', verifyToken, petController.getAllPets)
+router.get('/getAllLostPets', 
+    // verifyToken,
+     petController.getAllLostPets)
 
 router.get('/updatePetInfo', verifyToken, petController.updatePetInfo, 
     check('petName').notEmpty().isLength({min: 3}),

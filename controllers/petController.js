@@ -17,11 +17,10 @@ const addNewPet = async (req, res, next) => {
     //     return next(error)
     //  }
 
-   const { userId, petId, petName, age, description, otherInfo, image, status } = req.body;
+   const { userId, petId, petName, age, description, otherInfo, image, status, dateLastSeen, locationLastSeen } = req.body;
 
    let user;
    let newPet;
-
    let randomId = uuid();
 
    try {
@@ -33,7 +32,9 @@ const addNewPet = async (req, res, next) => {
             description,
             otherInfo,
             image: `https://res.cloudinary.com/daxrovkug/image/upload/v1746460136/ktApp-petMainPic/${petId}.jpg`,
-            status
+            status,
+            dateLastSeen,
+            locationLastSeen: [locationLastSeen.lat, locationLastSeen.lon]
         })
         
 
@@ -49,13 +50,13 @@ const addNewPet = async (req, res, next) => {
                 await user.pets.push(newPet);
                 await user.save();
                 await sess.commitTransaction();
-
+                console.log(newPet)
                 res.json(newPet)
             }
         }catch(err){
             const error = new HttpError('Error Adding Pet, please try again!', 500);
             res.json({msg: error.message});
-            return next(error) 
+            return next(err) 
         }
    } catch(err) {
         const error = new HttpError('Unexpected Error', 500);
@@ -100,21 +101,21 @@ const updatePetInfo = async ( req, res, next ) => {
 
 
 
-// TEST METHOD -----------------------------------------------------------------------
 
-const getAllPets = async (req, res, next) => {
-    let allPets;
+const getAllLostPets = async (req, res, next) => {
+    let allLostPets;
     try {
-        allPets = await Pet.find({})
+        allLostPets = await Pet.find({status: 'missing'})
     } catch(err) {
         const error = new HttpError('Could Not retreive List', 500)
         res.json({msg: error.message});
         return next(error)
     }
-    return res.json(allPets)
+    return res.json(allLostPets)
 }
 
 
+// TEST METHOD -----------------------------------------------------------------------
 const deleteAllPets = async (req, res, next) => {
     console.log('running delete')
     try {
@@ -129,6 +130,6 @@ exports.addNewPet = addNewPet;
 exports.getPetsByUserId = getPetsByUserId;
 exports.updatePetInfo = updatePetInfo;
 exports.uploadPhoto = uploadPhoto;
+exports.getAllLostPets = getAllLostPets;
 
 exports.deleteAllPets = deleteAllPets;
-exports.getAllPets = getAllPets;

@@ -11,6 +11,8 @@ let petSchema = new Schema({
     otherInfo: { type: String, require: false },
     image: { type: String, require: false },
     status: {type: String, require: true},
+    dateLastSeen: { type: Date, default: Date.now },
+    locationLastSeen: {type: [Number], require: false},
 })
 
 module.exports = mongoose.model('Pet', petSchema)
