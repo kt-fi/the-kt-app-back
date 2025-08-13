@@ -114,6 +114,31 @@ const getAllLostPets = async (req, res, next) => {
     return res.json(allLostPets)
 }
 
+const deletePetById = async (req, res, next) => {
+    const petId = req.params.petId;
+    let pet;
+
+    try {
+        pet = await Pet.findOneAndDelete({petId: petId});
+        if(!pet) {
+            const error = new HttpError('Pet Not Found', 404);
+            res.json({msg: error.message});
+            return next(error)
+        }
+    } catch(err) {
+        const error = new HttpError('Error Deleting Pet', 500);
+        res.json({msg: error.message});
+        return next(error)
+    }
+
+    res.json({msg: 'Pet Deleted Successfully', petId: pet.petId});
+}
+
+const updatePetById = async (req, res, next) => {
+//UPDATE LOGIC HERE
+}
+
+
 
 // TEST METHOD -----------------------------------------------------------------------
 const deleteAllPets = async (req, res, next) => {
@@ -131,5 +156,8 @@ exports.getPetsByUserId = getPetsByUserId;
 exports.updatePetInfo = updatePetInfo;
 exports.uploadPhoto = uploadPhoto;
 exports.getAllLostPets = getAllLostPets;
+exports.deletePetById = deletePetById;
+exports.updatePetById = updatePetById;
 
+// TEMP
 exports.deleteAllPets = deleteAllPets;

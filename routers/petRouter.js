@@ -23,6 +23,15 @@ router.get('/updatePetInfo', verifyToken, petController.updatePetInfo,
     check('age').isNumeric().notEmpty(),
     check('description').notEmpty().isLength({min:10}),)
 
+router.delete('/deletePetById/:petId',
+    //  verifyToken, 
+     petController.deletePetById)
+
+router.delete('/updatePetById/:petId', verifyToken, petController.updatePetById,
+    check('petName').notEmpty().isLength({min: 3}),
+    check('age').isNumeric().notEmpty(),
+    check('description').notEmpty().isLength({min:10}),)    
+
 router.delete('/deleteAllPets', petController.deleteAllPets)
 
 module.exports = router;

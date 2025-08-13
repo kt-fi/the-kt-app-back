@@ -9,7 +9,7 @@ let petSchema = new Schema({
     age: { type: Number, require: true},
     description: { type: String, require: true },
     otherInfo: { type: String, require: false },
-    image: { type: String, require: false },
+    image: { type: String, require: false }, //Change to array if multiple images
     status: {type: String, require: true},
     dateLastSeen: { type: Date, default: Date.now },
     locationLastSeen: {type: [Number], require: false},
