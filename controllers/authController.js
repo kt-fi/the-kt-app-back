@@ -212,21 +212,35 @@ const checkLoginWithJWT = async (req, res, next) => {
 };
 
 
-const getLocation = async(req, res, next) => {
- 
-  try{
-const { lat, lon } = req.params;
-  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
-  const response = await fetch(url);
-  const data = await response.json();
-  res.json(data);
-  }catch(err){
-       const error = new HttpError("Failed to get geolocation", 500);
-    return next(err);
-  }
-    
 
+const getLocation = async (req, res) => {
+  try {
+    const { lat, lon } = req.params;
+    if (!lat || !lon) {
+      return res.status(400).json({ error: 'Latitude and longitude are required' });
+    }
+
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Kt-app/1.0 (kt-five@hotmail.com)'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+
+  } catch (err) {
+    console.error('Error fetching location:', err);
+    res.status(500).json({ error: err.message });
   }
+};
+  
   
 
 
