@@ -5,7 +5,6 @@ const User = require("../schemas/userSchema");
 const HttpError = require("../httpError");
 const { validationResult } = require("express-validator");
 
-const fetch = require('node-fetch');
 
 const loginGoogle = async (req, res, next) => {
   let newUser = req.body;
