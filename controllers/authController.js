@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../schemas/userSchema.js';
 import HttpError from '../httpError.js';
 import { validationResult } from 'express-validator';
-
+import fetch from 'node-fetch';
 const loginGoogle = async (req, res, next) => {
   let newUser = req.body;
   let user;
