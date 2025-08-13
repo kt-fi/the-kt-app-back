@@ -228,7 +228,7 @@ const { lat, lon } = req.params;
 
   }
   
-}
+
 
 
 
