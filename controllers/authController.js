@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../schemas/userSchema");
 const HttpError = require("../httpError");
 const { validationResult } = require("express-validator");
-const fetch = require('node-fetch');
+
+import fetch from 'node-fetch'; // if using ES modules
 
 const loginGoogle = async (req, res, next) => {
   let newUser = req.body;
