@@ -222,7 +222,7 @@ const { lat, lon } = req.params;
   res.json(data);
   }catch(err){
        const error = new HttpError("Failed to get geolocation", 500);
-    return next(error);
+    return next(err);
   }
     
 
