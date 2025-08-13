@@ -1,5 +1,6 @@
 {
   "name": "kt-app",
+  "type": "module",
   "version": "1.0.0",
   "description": "The Backend For The new animal finding platform",
   "main": "app.js",
@@ -29,4 +30,5 @@
     "uuid": "^11.1.0",
     "uuidv4": "^6.2.13"
   }
+  
 }
