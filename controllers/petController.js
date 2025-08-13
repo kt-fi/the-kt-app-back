@@ -1,11 +1,10 @@
-const Pet = require('../schemas/petSchema');
-const User = require('../schemas/userSchema');
-const HttpError = require('../httpError');
-const { uuid } = require('uuidv4');
-const mongoose = require('mongoose')
-const { validationResult } = require('express-validator')
-
-const cloudinary = require('../utils/cloudinary');
+import Pet from '../schemas/petSchema.js';
+import User from '../schemas/userSchema.js';
+import HttpError from '../httpError.js';
+import { uuid } from 'uuidv4';
+import mongoose from 'mongoose';
+import { validationResult } from 'express-validator';
+import cloudinary from '../utils/cloudinary.js';
 
 const addNewPet = async (req, res, next) => {
     // let errors = validationResult(req);
@@ -151,13 +150,14 @@ const deleteAllPets = async (req, res, next) => {
     }
 }
 
-exports.addNewPet = addNewPet;
-exports.getPetsByUserId = getPetsByUserId;
-exports.updatePetInfo = updatePetInfo;
-exports.uploadPhoto = uploadPhoto;
-exports.getAllLostPets = getAllLostPets;
-exports.deletePetById = deletePetById;
-exports.updatePetById = updatePetById;
-
-// TEMP
-exports.deleteAllPets = deleteAllPets;
+export { 
+  addNewPet,
+  getPetsByUserId,
+  updatePetInfo,
+  uploadPhoto,
+  getAllLostPets,
+  deletePetById,
+  updatePetById,
+  // TEMP
+  deleteAllPets
+};

@@ -1,6 +1,7 @@
 {
   "name": "kt-app",
   "version": "1.0.0",
+  "type": "module",
   "description": "The Backend For The new animal finding platform",
   "main": "app.js",
   "scripts": {

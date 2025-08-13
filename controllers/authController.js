@@ -1,10 +1,9 @@
-const { uuid } = require("uuidv4");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../schemas/userSchema");
-const HttpError = require("../httpError");
-const { validationResult } = require("express-validator");
-
+import { uuid } from 'uuidv4';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import User from '../schemas/userSchema.js';
+import HttpError from '../httpError.js';
+import { validationResult } from 'express-validator';
 
 const loginGoogle = async (req, res, next) => {
   let newUser = req.body;
@@ -214,7 +213,7 @@ const checkLoginWithJWT = async (req, res, next) => {
 
 
 
-const getLocation = async (req, res) => {
+
 const getLocation = async (req, res) => {
   try {
     const { lat, lon } = req.params;
@@ -245,17 +244,18 @@ const getLocation = async (req, res) => {
   }
 };
 
-module.exports = getLocation;
 
+
+  
+  
+
+
+
+
+export { 
+  loginGoogle, 
+  signupEmail, 
+  loginEmail, 
+  checkLoginWithJWT, 
+  getLocation 
 };
-  
-  
-
-
-
-
-exports.loginGoogle = loginGoogle;
-exports.signupEmail = signupEmail;
-exports.loginEmail = loginEmail;
-exports.checkLoginWithJWT = checkLoginWithJWT;
-exports.getLocation = getLocation;

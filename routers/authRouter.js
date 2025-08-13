@@ -1,8 +1,8 @@
-const express = require('express');
-const authController = require('../controllers/authController')
-const { check } = require('express-validator')
-const router = express.Router();
+import express from 'express';
+import * as authController from '../controllers/authController.js';
+import { check } from 'express-validator';
 
+const router = express.Router();
 
 router.post('/auth/google', authController.loginGoogle);
 
@@ -21,4 +21,4 @@ router.get('/auth/checkLoginWithJWT', authController.checkLoginWithJWT)
 
 router.get('/api/location/:lat/:lon', authController.getLocation);
 
-module.exports = router;
+ export default router;

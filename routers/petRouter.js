@@ -1,10 +1,9 @@
-const petController = require('../controllers/petController');
-const express = require('express');
+import express from 'express';
+import * as petController from '../controllers/petController.js';
 const router = express.Router();
-const { check } = require('express-validator')
-const { verifyToken } = require('../verifyJWT')
-
-const upload = require("../utils/multerConfig");
+import { check } from 'express-validator';
+import verifyToken from '../verifyJWT.js';
+import upload from '../utils/multerConfig.js';
 
 router.post('/uploadPhoto', upload.single('image'), petController.uploadPhoto)
 
@@ -34,5 +33,5 @@ router.delete('/updatePetById/:petId', verifyToken, petController.updatePetById,
 
 router.delete('/deleteAllPets', petController.deleteAllPets)
 
-module.exports = router;
+export default router;
 
