@@ -211,7 +211,20 @@ const checkLoginWithJWT = async (req, res, next) => {
   }
 };
 
+
+const getLocation = async(req, res, next) => {
+  console.log('called')
+  const { lat, lon } = req.params;
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+  const response = await fetch(url);
+  const data = await response.json();
+  res.json(data);
+}
+
+
+
 exports.loginGoogle = loginGoogle;
 exports.signupEmail = signupEmail;
 exports.loginEmail = loginEmail;
 exports.checkLoginWithJWT = checkLoginWithJWT;
+exports.getLocation = getLocation;
