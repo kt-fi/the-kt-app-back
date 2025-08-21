@@ -5,6 +5,10 @@ import User from '../schemas/userSchema.js';
 import HttpError from '../httpError.js';
 import { validationResult } from 'express-validator';
 
+
+
+
+
 const loginGoogle = async (req, res, next) => {
   let newUser = req.body;
   let user;
@@ -217,6 +221,7 @@ const checkLoginWithJWT = async (req, res, next) => {
 const getLocation = async (req, res) => {
   try {
     const { lat, lon } = req.params;
+    console.log(lat)
 
     if (!lat || !lon) {
       return res.status(400).json({ error: 'Latitude and longitude are required' });
@@ -227,7 +232,7 @@ const getLocation = async (req, res) => {
     // Use global fetch in Node 20
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'MyApp/1.0 (your.email@example.com)'
+        'User-Agent': 'Katie-App (katie5five.5@gmail.com)'
       }
     });
 

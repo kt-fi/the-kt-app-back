@@ -14,7 +14,7 @@ let petSchema = new Schema({
     image: { type: String, require: false }, //Change to array if multiple images
     status: {type: String, require: true},
     dateLastSeen: { type: Date, default: Date.now },
-    locationLastSeen: {type: [Number], require: false},
+    locationLastSeen:{ type: Schema.Types.ObjectId, ref: 'Location' },
 })
 
 export default mongoose.model('Pet', petSchema);

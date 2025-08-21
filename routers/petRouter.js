@@ -1,5 +1,5 @@
 import express from 'express';
-import * as petController from '../controllers/petController.js';
+import * as petController from '../controllers/petController/petController.js';
 const router = express.Router();
 import { check } from 'express-validator';
 import verifyToken from '../verifyJWT.js';
@@ -17,16 +17,13 @@ router.get('/getAllLostPets',
     // verifyToken,
      petController.getAllLostPets)
 
-router.get('/updatePetInfo', verifyToken, petController.updatePetInfo, 
-    check('petName').notEmpty().isLength({min: 3}),
-    check('age').isNumeric().notEmpty(),
-    check('description').notEmpty().isLength({min:10}),)
-
 router.delete('/deletePetById/:petId',
-    //  verifyToken, 
+     verifyToken, 
      petController.deletePetById)
 
-router.delete('/updatePetById/:petId', verifyToken, petController.updatePetById,
+router.put('/updatePetById/:petId',
+    //  verifyToken,
+      petController.updatePetById,
     check('petName').notEmpty().isLength({min: 3}),
     check('age').isNumeric().notEmpty(),
     check('description').notEmpty().isLength({min:10}),)    
