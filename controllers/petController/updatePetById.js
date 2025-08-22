@@ -20,88 +20,58 @@ const updatePetById = async (req, res, next) => {
   let locationLastSeenDoc;
   let coords;
 
-  console.log("locationLastSeen:", locationLastSeen);
-
   if (
     typeof locationLastSeen.lat === "number" &&
     typeof locationLastSeen.lon === "number"
   ) {
-    coords = [locationLastSeen.lat, locationLastSeen.lon];
-    console.log(coords, locationLastSeen);
+    coords = [locationLastSeen.lon, locationLastSeen.lat]; // GeoJSON order
   } else {
     const error = new HttpError("Invalid coordinates", 422);
-    res.json({ msg: error.message });
+    res.status(422).json({ msg: error.message });
     return next(error);
   }
 
   if (!petIdParam) {
     const error = new HttpError("Pet ID is required", 400);
-    res.json({ msg: error.message });
+    res.status(400).json({ msg: error.message });
     return next(error);
   }
 
   try {
-    console.log(coords);
-    let pet = await Pet.findOne({ petId: petIdParam });
-
-    if (pet) {
-      locationLastSeenDoc = await Location.findOne({
-        _id: pet.locationLastSeen,
-      });
-      if (!locationLastSeenDoc) {
-        const error = new HttpError("Location Not Found", 404);
-        res.json({ msg: error.message });
-        return next(error);
-      }
-    }
+    const pet = await Pet.findOne({ petId: petIdParam });
 
     if (!pet) {
       const error = new HttpError("Pet Not Found", 404);
-      res.json({ msg: error.message });
+      res.status(404).json({ msg: error.message });
       return next(error);
     }
-  } catch (err) {
-    const error = new HttpError("failed to get pet", 500);
-    res.json({ msg: error.message });
-    return next(err);
-  }
 
-  try {
-    console.log("p" + coords);
-    locationLastSeenDoc = await Location.findOneAndUpdate(
-      { _id: locationLastSeenDoc._id },
-      {
-        $set: {
-          status: status,
-          location: { type: "Point", coordinates: coords },
-        },
-      },
-      { new: true }
-    );
+    locationLastSeenDoc = await Location.findOne({
+      _id: pet.locationLastSeen,
+    });
 
+    if (!locationLastSeenDoc) {
+      const error = new HttpError("Location Not Found", 404);
+      res.status(404).json({ msg: error.message });
+      return next(error);
+    }
+
+    // Update location
+    locationLastSeenDoc.status = status;
+    locationLastSeenDoc.location = { type: "Point", coordinates: coords };
     await locationLastSeenDoc.save();
-  } catch (err) {
-    const error = new HttpError("failed to set location", 500);
-    res.json({ msg: error.message });
-    return next(err);
-  }
 
-  try {
-    let pet = await Pet.findOneAndUpdate(
-      { petId: petIdParam },
-      { $set: { description, otherInfo, status } }
-    );
+    // Update pet
+    pet.description = description;
+    pet.otherInfo = otherInfo;
+    pet.status = status;
     await pet.save();
-    if (!pet) {
-      const error = new HttpError("Pet Not Found", 404);
-      res.json({ msg: error.message });
-      return next(error);
-    }
+
     return res.json(pet);
   } catch (err) {
     const error = new HttpError("Error Updating Pet", 500);
-    res.json({ msg: error.message });
-    return next(err);
+    res.status(500).json({ msg: error.message });
+    return next(error);
   }
 };
 

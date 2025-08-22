@@ -1,10 +1,17 @@
+import mongoose from "mongoose";
+import Pet from "../../schemas/petSchema.js";
+import User from "../../schemas/userSchema.js";
+import Location from "../../schemas/locationSchema.js";
+import HttpError from "../../httpError.js";
+
 const addNewPet = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new HttpError(errors.array().map(e => e.msg).join(', '), 422);
-    res.status(422).json({ msg: error.message });
-    return next(error);
-  }
+  // Uncomment and use if you want validation
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   const error = new HttpError(errors.array().map(e => e.msg).join(', '), 422);
+  //   res.status(422).json({ msg: error.message });
+  //   return next(error);
+  // }
 
   const {
     userId,
@@ -28,32 +35,32 @@ const addNewPet = async (req, res, next) => {
   await sess.startTransaction();
 
   try {
-    // Validate and set coordinates
-    if (
-      locationLastSeen &&
-      typeof locationLastSeen.lat === "number" &&
-      typeof locationLastSeen.lon === "number"
-    ) {
-      coords = [locationLastSeen.lon, locationLastSeen.lat]; // GeoJSON order
-    } else {
-      coords = null;
-    }
+    // Only create a Location if status is "missing" and locationLastSeen is provided
+    if (status === "missing" && locationLastSeen) {
+      if (
+        typeof locationLastSeen.lat === "number" &&
+        typeof locationLastSeen.lon === "number"
+      ) {
+        // GeoJSON expects [longitude, latitude]
+        coords = [locationLastSeen.lat, locationLastSeen.lon];
+      } else {
+        coords = null;
+      }
 
-    if (!coords) {
-      throw new Error("Invalid coordinates");
-    }
+      if (!coords) {
+        throw new HttpError("Invalid coordinates", 422);
+      }
 
-    if(!coords=== null){
-      locationLastSeenDoc = await new Location({
-      status: status,
-      location: {
-        type: "Point",
-        coordinates: coords,
-      },
-    });
-    await locationLastSeenDoc.save({ session: sess });
+      locationLastSeenDoc = new Location({
+        status: status,
+        location: {
+          type: "Point",
+          coordinates: coords,
+        },
+      });
+      await locationLastSeenDoc.save({ session: sess });
+      console.log("Location saved:", locationLastSeenDoc);
     }
-
 
     newPet = new Pet({
       userId,
@@ -65,7 +72,7 @@ const addNewPet = async (req, res, next) => {
       image: `https://res.cloudinary.com/daxrovkug/image/upload/v1746460136/ktApp-petMainPic/${petId}.jpg`,
       status,
       dateLastSeen,
-      locationLastSeen: locationLastSeenDoc._id || null
+      locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc._id : null,
     });
 
     await newPet.save({ session: sess });
@@ -88,8 +95,10 @@ const addNewPet = async (req, res, next) => {
   } catch (err) {
     await sess.abortTransaction();
     sess.endSession();
-    const error = new HttpError(err.message || "Unexpected Error", 500);
-    res.status(500).json({ msg: error.message });
+    const error = err instanceof HttpError
+      ? err
+      : new HttpError(err.message || "Unexpected Error", 500);
+    res.status(error.statusCode).json({ msg: error.message });
     return next(error);
   }
 };
