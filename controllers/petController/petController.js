@@ -17,8 +17,7 @@ const deleteAllPets = async (req, res, next) => {
     res.json({ msg: "Deleted successfully" });
   } catch (err) {
     const error = new HttpError("Error deleting pets", 500);
-    res.status(500).json({ msg: error.message });
-    return next(error);
+    return res.status(500).json({ msg: error.message });
   }
 };
 

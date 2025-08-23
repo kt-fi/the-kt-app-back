@@ -7,8 +7,8 @@ const getLocation = async (req, res, next) => {
 
     if (!lat || !lon) {
       const error = new HttpError('Latitude and longitude are required', 400);
-      res.status(400).json({ error: error.message });
-      return next(error);
+      return res.status(400).json({ error: error.message });
+
     }
 
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
@@ -29,8 +29,7 @@ const getLocation = async (req, res, next) => {
 
   } catch (err) {
     const error = new HttpError('Error fetching location', 500);
-    res.status(500).json({ error: error.message });
-    return next(error);
+    return res.status(500).json({ error: error.message });
   }
 };
 

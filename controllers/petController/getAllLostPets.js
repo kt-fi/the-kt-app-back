@@ -27,19 +27,17 @@ const getAllLostPets = async (req, res, next) => {
     }).populate("locationLastSeen");
 
     if (allLostPets.length > 0) {
-      return res.json(allLostPets);
-    } else {
-      const error = new HttpError(
-        "No lost pets found, try restarting app",
-        404
-      );
-      res.status(404).json({ msg: error.message });
-      return next(error);
-    }
+  return res.json(allLostPets);
+} else {
+  const error = new HttpError(
+    "No lost pets found, try restarting app",
+    404
+  );
+  return res.status(404).json({ msg: error.message });
+}
   } catch (err) {
     const error = new HttpError("Could Not retrieve List", 500);
-    res.status(500).json({ msg: error.message });
-    return next(error);
+    return res.status(500).json({ msg: error.message });
   }
 };
 

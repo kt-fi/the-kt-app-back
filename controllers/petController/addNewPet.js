@@ -81,8 +81,8 @@ const addNewPet = async (req, res, next) => {
     if (!user) {
       await sess.abortTransaction();
       const error = new HttpError("User Not Found", 404);
-      res.status(404).json({ msg: error.message });
-      return next(error);
+      return res.status(404).json({ msg: error.message });
+
     }
 
     user.pets.push(newPet);
@@ -98,8 +98,7 @@ const addNewPet = async (req, res, next) => {
     const error = err instanceof HttpError
       ? err
       : new HttpError(err.message || "Unexpected Error", 500);
-    res.status(error.statusCode).json({ msg: error.message });
-    return next(error);
+    return res.status(error.statusCode).json({ msg: error.message });
   }
 };
 

@@ -21,8 +21,7 @@ const loginGoogle = async (req, res, next) => {
     }
   } catch (err) {
     const error = new HttpError("Failed to find or save user", 500);
-    res.status(500).json({ msg: error.message });
-    return next(error);
+    return res.status(500).json({ msg: error.message });
   }
 
   try {
@@ -31,8 +30,7 @@ const loginGoogle = async (req, res, next) => {
     res.json({ user, token });
   } catch (err) {
     const error = new HttpError("Error Creating JWT", 500);
-    res.status(500).json({ msg: error.message });
-    return next(error);
+    return res.status(500).json({ msg: error.message });
   }
 };
 

@@ -3,8 +3,7 @@ import HttpError from "../../httpError.js";
 const uploadPhoto = async (req, res, next) => {
   if (!req.file) {
     const error = new HttpError("No file uploaded", 400);
-    res.status(400).json({ msg: error.message });
-    return next(error);
+    return res.status(400).json({ msg: error.message });
   }
 
   res.json({

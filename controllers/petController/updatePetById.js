@@ -27,14 +27,12 @@ const updatePetById = async (req, res, next) => {
     coords = [locationLastSeen.lon, locationLastSeen.lat]; // GeoJSON order
   } else {
     const error = new HttpError("Invalid coordinates", 422);
-    res.status(422).json({ msg: error.message });
-    return next(error);
+    return res.status(422).json({ msg: error.message });
   }
 
   if (!petIdParam) {
     const error = new HttpError("Pet ID is required", 400);
-    res.status(400).json({ msg: error.message });
-    return next(error);
+    return res.status(400).json({ msg: error.message });
   }
 
   try {
@@ -42,8 +40,8 @@ const updatePetById = async (req, res, next) => {
 
     if (!pet) {
       const error = new HttpError("Pet Not Found", 404);
-      res.status(404).json({ msg: error.message });
-      return next(error);
+      return res.status(404).json({ msg: error.message });
+
     }
 
     locationLastSeenDoc = await Location.findOne({
@@ -52,8 +50,8 @@ const updatePetById = async (req, res, next) => {
 
     if (!locationLastSeenDoc) {
       const error = new HttpError("Location Not Found", 404);
-      res.status(404).json({ msg: error.message });
-      return next(error);
+      return res.status(404).json({ msg: error.message });
+
     }
 
     // Update location
@@ -70,8 +68,7 @@ const updatePetById = async (req, res, next) => {
     return res.json(pet);
   } catch (err) {
     const error = new HttpError("Error Updating Pet", 500);
-    res.status(500).json({ msg: error.message });
-    return next(error);
+    return res.status(500).json({ msg: error.message });
   }
 };
 

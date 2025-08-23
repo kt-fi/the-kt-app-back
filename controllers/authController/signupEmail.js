@@ -10,8 +10,7 @@ const signupEmail = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     const error = new HttpError("There is an error(s) in your form, please check and try again", 422);
-    res.status(422).json({ msg: error.message, errors: errors.array() });
-    return next(error);
+    return res.status(422).json({ msg: error.message, errors: errors.array() });
   }
 
   const { userName, email, password, telephone } = req.body;
@@ -25,8 +24,8 @@ const signupEmail = async (req, res, next) => {
         "User Already Exists, Please Try again with another Email address",
         409
       );
-      res.status(409).json({ msg: error.message });
-      return next(error);
+      return res.status(409).json({ msg: error.message });
+
     }
 
     const passwordHashed = await bcrypt.hash(password, saltRounds);
@@ -48,8 +47,7 @@ const signupEmail = async (req, res, next) => {
     res.json({ user, token });
   } catch (err) {
     const error = new HttpError("An Error has occurred and user could not be created, please try again!", 500);
-    res.status(500).json({ msg: error.message });
-    return next(error);
+    return res.status(500).json({ msg: error.message });
   }
 };
 
