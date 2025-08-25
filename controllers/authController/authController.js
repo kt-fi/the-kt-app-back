@@ -220,36 +220,35 @@ export { default as getLocation } from '../locationController/getLocation.js';
 
 
 
-const getLocation = async (req, res) => {
-  try {
-    const { lat, lon } = req.params;
-    console.log(lat)
+// const getLocation = async (req, res) => {
+//   try {
+//     const { lat, lon } = req.params;
 
-    if (!lat || !lon) {
-      return res.status(400).json({ error: 'Latitude and longitude are required' });
-    }
+//     if (!lat || !lon) {
+//       return res.status(400).json({ error: 'Latitude and longitude are required' });
+//     }
 
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+//     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
 
-    // Use global fetch in Node 20
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Katie-App (katie5five.5@gmail.com)'
-      }
-    });
+//     // Use global fetch in Node 20
+//     const response = await fetch(url, {
+//       headers: {
+//         'User-Agent': 'Katie-App (katie5five.5@gmail.com)'
+//       }
+//     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`HTTP error ${response.status}`);
+//     }
 
-    const data = await response.json();
-    res.json(data);
+//     const data = await response.json();
+//     res.json(data);
 
-  } catch (err) {
-    console.error('Error fetching location:', err);
-    res.status(500).json({ error: err.message });
-  }
-};
+//   } catch (err) {
+//     console.error('Error fetching location:', err);
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 
 
 

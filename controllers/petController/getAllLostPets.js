@@ -9,7 +9,6 @@ const getAllLostPets = async (req, res, next) => {
   const earthRadius = 6378137;
   const radiusInRadians = radiusInMeters / earthRadius;
 
-  console.log(`Searching for lost pets within ${radiusInMeters} meters of center point (${centerLat}, ${centerLon})`);
 
   try {
     const locations = await Location.find({

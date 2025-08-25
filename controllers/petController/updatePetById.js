@@ -20,11 +20,14 @@ const updatePetById = async (req, res, next) => {
   let locationLastSeenDoc;
   let coords;
 
+
+
   if (
+    locationLastSeen !== undefined &&
     typeof locationLastSeen.lat === "number" &&
     typeof locationLastSeen.lon === "number"
   ) {
-    coords = [locationLastSeen.lon, locationLastSeen.lat]; // GeoJSON order
+    coords = [locationLastSeen.lat, locationLastSeen.lon]; // GeoJSON order
   } else {
     const error = new HttpError("Invalid coordinates", 422);
     return res.status(422).json({ msg: error.message });
@@ -46,7 +49,9 @@ const updatePetById = async (req, res, next) => {
 
     locationLastSeenDoc = await Location.findOne({
       _id: pet.locationLastSeen,
-    });
+      
+    }
+    );
 
     if (!locationLastSeenDoc) {
       const error = new HttpError("Location Not Found", 404);
@@ -57,12 +62,15 @@ const updatePetById = async (req, res, next) => {
     // Update location
     locationLastSeenDoc.status = status;
     locationLastSeenDoc.location = { type: "Point", coordinates: coords };
+    console.log('new', locationLastSeenDoc);
     await locationLastSeenDoc.save();
 
     // Update pet
+    pet.age = age;
     pet.description = description;
     pet.otherInfo = otherInfo;
     pet.status = status;
+    pet.dateLastSeen = dateLastSeen;
     await pet.save();
 
     return res.json(pet);

@@ -59,7 +59,6 @@ const addNewPet = async (req, res, next) => {
         },
       });
       await locationLastSeenDoc.save({ session: sess });
-      console.log("Location saved:", locationLastSeenDoc);
     }
 
     newPet = new Pet({
@@ -90,8 +89,7 @@ const addNewPet = async (req, res, next) => {
 
     await sess.commitTransaction();
     sess.endSession();
-
-    res.json(newPet);
+    return res.json(newPet);
   } catch (err) {
     await sess.abortTransaction();
     sess.endSession();

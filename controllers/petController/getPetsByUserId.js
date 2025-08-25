@@ -5,7 +5,9 @@ const getPetsByUserId = async (req, res, next) => {
   const userId = req.params.userId;
 
   try {
-    const user = await User.findOne({ userId }).populate("pets");
+    const user = await User.findOne({ userId })
+    .populate("pets")
+    .populate("location");
 
     if (!user || !user.pets || user.pets.length === 0) {
       const error = new HttpError("No pets found for this user", 404);

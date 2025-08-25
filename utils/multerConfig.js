@@ -21,11 +21,12 @@ const storage = new CloudinaryStorage({
   },
 });
 
+console.log('Multer configured with Cloudinary storage');
 // Initialize multer with Cloudinary storage
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
+    fileSize: 10 * 1024 * 1024, // 5MB
   },
 });
 

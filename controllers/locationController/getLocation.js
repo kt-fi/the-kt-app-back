@@ -3,7 +3,6 @@ import  HttpError  from '../../httpError.js';
 const getLocation = async (req, res, next) => {
   try {
     const { lat, lon } = req.params;
-    console.log(lat)
 
     if (!lat || !lon) {
       const error = new HttpError('Latitude and longitude are required', 400);
