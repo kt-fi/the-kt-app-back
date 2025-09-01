@@ -89,8 +89,10 @@ const addNewPet = async (req, res, next) => {
 
     await sess.commitTransaction();
     sess.endSession();
-    return res.json(newPet);
-  } catch (err) {
+    console.log(newPet)
+    res.json(newPet);
+    return;
+    } catch (err) {
     await sess.abortTransaction();
     sess.endSession();
     const error = err instanceof HttpError

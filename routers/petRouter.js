@@ -5,30 +5,12 @@ import { check } from 'express-validator';
 import verifyToken from '../verifyJWT.js';
 import upload from '../utils/multerConfig.js';
 
-router.post('/uploadPhoto',
-  (req, res, next) => {
-    console.log('BEFORE MULTER');
-    next();
-  },
-  upload.single('image'),
-  function (err, req, res, next) {
-    if (err) {
-      console.error('MULTER/UPLOAD ERROR:', err);
-      return res.status(500).json({ error: err.message });
-    }
-    next();
-  },
-  (req, res, next) => {
-    console.log('AFTER MULTER');
-    // Log what Multer received
-    console.log('req.file:', req.file);
-    console.log('req.body:', req.body);
-    next();
-  },
-  petController.uploadPhoto
-);
 
-router.post('/newPet', verifyToken,
+router.post('/uploadPhoto', upload.single('image'), petController.uploadPhoto);
+
+router.post('/newPet',
+  //  verifyToken,
+
     check('petName').notEmpty().isLength({min: 3}),
     check('age').isNumeric({max:30}).notEmpty(),
     check('description').notEmpty().isLength({min:10}),

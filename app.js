@@ -14,21 +14,23 @@ import * as cloudinary from './utils/cloudinary.js';
 
 import appRouter from './routers/authRouter.js';
 import petRouter from './routers/petRouter.js';
-app.use((req, res, next) => {
-  console.log(`[${req.method}] ${req.originalUrl}`);
-  next();
-});
+
+// app.use((req, res, next) => {
+//   console.log(`[${req.method}] ${req.originalUrl}`);
+//   next();
+// });
 app.use(cors());
+
 app.use(express.json({limit: '100mb', extended: true}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.text({limit: '100mb', extended: true}));
 app.use("/app", appRouter );
 app.use('/pets', petRouter)
 
-app.use((err, req, res, next) => {
-  console.error('MULTER/EXPRESS ERROR:', err);
-  res.status(500).json({ error: err.message });
-});
+// app.use((err, req, res, next) => {
+//   console.error('MULTER/EXPRESS ERROR:', err);
+//   res.status(500).json({ error: err.message });
+// });
 
 mongoose.set('strictQuery', true);
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PWD}@cluster0.mhax05f.mongodb.net/`)

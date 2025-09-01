@@ -12,9 +12,7 @@ const getPetsByUserId = async (req, res, next) => {
     if (!user || !user.pets || user.pets.length === 0) {
       const error = new HttpError("No pets found for this user", 404);
       return res.status(404).json({ msg: error.message });
-
     }
-
     res.json(user.pets);
   } catch (err) {
     const error = new HttpError("Unable to find user", 500);

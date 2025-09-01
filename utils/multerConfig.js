@@ -9,24 +9,30 @@ dotenv.config();
 
 
 const storage = new CloudinaryStorage({
+  
   cloudinary: cloudinary,
   params: {
     folder: "ktApp-petMainPic", // Folder name in your Cloudinary account
-    allowed_formats: ["jpg", "jpeg", "png"], // Allowed file formats
+    // allowed_formats: ["jpg", "jpeg", "png", "JPG", "gif"], // Allowed file formats
+    // transformation: [
+    //   { width: 400, height: 300, crop: "fill", quality: "auto:eco" } // Add quality here
+    // ],
+
     public_id: (req, file) => {
       const timestamp = Date.now();
       const originalName = file.originalname.replace(/\s+/g, "_");
+     console.log(file.name, file.type, file.size, file);
       return `${originalName}`; // Unique file name -- May Change to include timestamp
     },
   },
 });
 
-console.log('Multer configured with Cloudinary storage');
+
 // Initialize multer with Cloudinary storage
 const upload = multer({
   storage,
   limits: {
-    fileSize: 10 * 1024 * 1024, // 5MB
+    fileSize: 100 * 1024 * 1024, // 10MB
   },
 });
 
