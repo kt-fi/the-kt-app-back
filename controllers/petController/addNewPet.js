@@ -89,7 +89,7 @@ const addNewPet = async (req, res, next) => {
 
     await sess.commitTransaction();
     sess.endSession();
-    console.log(newPet)
+    console.log('petn: newPet', newPet);
     res.json(newPet);
     return;
     } catch (err) {
