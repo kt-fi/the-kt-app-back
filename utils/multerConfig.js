@@ -21,7 +21,6 @@ const storage = new CloudinaryStorage({
     public_id: (req, file) => {
       const timestamp = Date.now();
       const originalName = file.originalname.replace(/\s+/g, "_");
-     console.log(file.name, file.type, file.size, file);
       return `${originalName}`; // Unique file name -- May Change to include timestamp
     },
   },

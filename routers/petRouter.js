@@ -6,7 +6,7 @@ import verifyToken from '../verifyJWT.js';
 import upload from '../utils/multerConfig.js';
 
 
-router.post('/uploadPhoto', upload.single('image'), petController.uploadPhoto);
+router.post('/uploadPhoto', upload.single('file'), petController.uploadPhoto);
 
 router.post('/newPet',
   //  verifyToken,
