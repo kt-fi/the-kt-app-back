@@ -13,10 +13,10 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "ktApp-petMainPic", // Folder name in your Cloudinary account
-    // allowed_formats: ["jpg", "jpeg", "png", "JPG", "gif"], // Allowed file formats
-    // transformation: [
-    //   { width: 400, height: 300, crop: "fill", quality: "auto:eco" } // Add quality here
-    // ],
+    allowed_formats: ["jpg", "jpeg", "png", "JPG", "gif"], // Allowed file formats
+    transformation: [
+      { width: 400, height: 300, crop: "fill", quality: "auto:eco" } // Add quality here
+    ],
 
     public_id: (req, file) => {
       const timestamp = Date.now();
