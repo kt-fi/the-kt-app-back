@@ -11,6 +11,7 @@ const getAllLostPets = async (req, res, next) => {
 
 
   try {
+
     const locations = await Location.find({
       location: {
         $geoWithin: {
@@ -32,7 +33,7 @@ const getAllLostPets = async (req, res, next) => {
     "No lost pets found, try restarting app",
     404
   );
-  return res.status(404).json({ msg: error.message });
+  return res.json({ msg: error.message });
 }
   } catch (err) {
     const error = new HttpError("Could Not retrieve List", 500);

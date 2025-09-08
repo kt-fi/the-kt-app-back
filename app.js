@@ -14,6 +14,7 @@ import * as cloudinary from './utils/cloudinary.js';
 
 import appRouter from './routers/authRouter.js';
 import petRouter from './routers/petRouter.js';
+import chatRouter from './routers/chatRouter.js';
 
 // app.use((req, res, next) => {
 //   console.log(`[${req.method}] ${req.originalUrl}`);
@@ -25,7 +26,8 @@ app.use(express.json({limit: '100mb', extended: true}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.text({limit: '100mb', extended: true}));
 app.use("/app", appRouter );
-app.use('/pets', petRouter)
+app.use('/pets', petRouter);
+app.use('/chat', chatRouter);
 
 // app.use((err, req, res, next) => {
 //   console.error('MULTER/EXPRESS ERROR:', err);

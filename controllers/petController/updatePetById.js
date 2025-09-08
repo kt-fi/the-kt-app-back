@@ -5,8 +5,8 @@ import e from "express";
 
 const updatePetById = async (req, res, next) => {
   const petIdParam = req.params.petId;
+  let locationRemoved;
 
-  console.log(req.body);
   const {
     userId,
     petId,
@@ -48,21 +48,19 @@ const updatePetById = async (req, res, next) => {
       return res.status(404).json({ msg: error.message });
     }
 
-    if (coords !== null) {
+    if(status === "safe") {
+      locationRemoved = await Location.findOneAndDelete({ _id: pet.locationLastSeen });
+    }
+
+    if (coords == null) {
       locationLastSeenDoc = await Location.findOne({
         _id: pet.locationLastSeen,
       });
     }
 
     // Update location
-    if (locationLastSeenDoc) {
-      locationLastSeenDoc.status = status;
-      locationLastSeenDoc.location = {
-        type: "Point",
-        coordinates: [coords[1], coords[0]],
-      };
-      await locationLastSeenDoc.save();
-    } else if (
+    
+    if (
       !locationLastSeenDoc &&
       coords !== null &&
       status === "missing"
