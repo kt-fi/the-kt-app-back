@@ -4,7 +4,8 @@ import express from "express";
 const router = express.Router();
 
 router.post("/sendMessage", chatController.sendMessage);
-
-
+router.get("/getAllChatMessagesById/:chatId", chatController.getAllChatMessagesById);
+router.get("/getChatById/:chatId", chatController.getChatById);
+router.get("/getAllUserChats/:userId", chatController.getAllUserChats);
 
 export default router;

@@ -21,4 +21,7 @@ router.get('/auth/checkLoginWithJWT', authController.checkLoginWithJWT)
 
 router.get('/api/location/:lat/:lon', authController.getLocation);
 
+
+
+
  export default router;

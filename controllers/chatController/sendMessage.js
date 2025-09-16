@@ -6,14 +6,18 @@ import Chat from "../../schemas/chatSchema.js";
 import mongoose from "mongoose";
 
 const sendMessage = async (req, res, next) => {
-  const { petId, chatId, senderId, message, location, image, recipientId } = req.body;
+  const { chatId, petId, recipientId, senderId, message, location, image } = req.body;
 
-  // Validate ObjectIds BEFORE querying
+
+  // MUST FIX RECIPIENT AND SENDER IDS **********************************************************************
+  //**********************************************************************************************************
+  // Validate ids BEFORE querying
   if (
-    !mongoose.Types.ObjectId.isValid(senderId) ||
-    !mongoose.Types.ObjectId.isValid(recipientId) ||
-    !mongoose.Types.ObjectId.isValid(petId)
+    !senderId ||
+    !recipientId ||
+    !petId
   ) {
+    console.error("Invalid senderId, recipientId, or petId");
     return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
   }
 
@@ -21,11 +25,16 @@ const sendMessage = async (req, res, next) => {
   sess.startTransaction();
 
   try {
-    let recipient = await User.findOne({ _id: recipientId }).session(sess);
-    let sender = await User.findOne({ _id: senderId }).session(sess);
+    let recipient = await User.findOne({ userId: recipientId }).session(sess);
+    let sender = await User.findOne({ userId: senderId }).session(sess);
     let pet = await Pet.findOne({ _id: petId }).session(sess);
 
+    console.log("Recipient:", recipient);
+    console.log("Sender:", sender);
+    console.log("Pet:", pet);
+
     if (!recipient || !sender) {
+      console.error("Recipient or sender not found");
       await sess.abortTransaction();
       sess.endSession();
       return res.status(404).json({ msg: "Recipient or sender not found" });
@@ -39,7 +48,7 @@ const sendMessage = async (req, res, next) => {
     if (!chat) {
       chat = new Chat({
         petId: pet._id,
-        participants: [senderId, recipientId],
+        participants: [sender._id, recipient._id],
         messages: [],
       });
       await chat.save({ session: sess });
@@ -51,7 +60,7 @@ const sendMessage = async (req, res, next) => {
 
     const newMessage = new Message({
       chatId: chat._id,
-      senderId,
+      senderId: sender._id,
       message,
       location,
       image,
@@ -67,6 +76,7 @@ const sendMessage = async (req, res, next) => {
 
     res.status(201).json(newMessage);
   } catch (error) {
+    console.error("Error in sendMessage:", error);
     await sess.abortTransaction();
     sess.endSession();
     next(error);
@@ -74,4 +84,4 @@ const sendMessage = async (req, res, next) => {
 };
 
 export default sendMessage;
-// filepath: d:\Programming\Katie App 2024\the-kt-
+// filepath: d:\Programming\Katie App 2024\the-kt-app

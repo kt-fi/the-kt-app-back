@@ -2,6 +2,9 @@ import Pet from "../../schemas/petSchema.js";
 import User from "../../schemas/userSchema.js";
 import HttpError from "../../httpError.js";
 import Location from "../../schemas/locationSchema.js";
+import Message from "../../schemas/messageSchema.js";
+import Chat from "../../schemas/chatSchema.js";
+import mongoose from "mongoose";
 
 export { default as addNewPet } from './addNewPet.js';
 export { default as getPetsByUserId } from './getPetsByUserId.js';
@@ -26,15 +29,31 @@ const uploadPhoto = async (req, res, next) => {
 };
 
 
+const getAllUsers = async (req, res, next) => {
+  let users;  
+  try {
+    users = await User.find({}, '-password'); // Exclude password field
+  } catch (err) {
+    const error = new HttpError("Fetching users failed, please try again later.", 500);
+    return res.status(500).json({ msg: error.message });
+  }
+  res.json(users);
+};
+
 
 const deleteAllPets = async (req, res, next) => {
   try {
     await Pet.deleteMany({});
-    res.json({ msg: "Deleted successfully" });
+    await User.deleteMany({});
+    await Location.deleteMany({});
+    await Message.deleteMany({});
+    await Chat.deleteMany({});
+
+    res.json({ msg: "Deleted Database successfully" });
   } catch (err) {
     const error = new HttpError("Error deleting pets", 500);
     return res.status(500).json({ msg: error.message });
   }
 };
 
-export { deleteAllPets, uploadPhoto };
+export { deleteAllPets, uploadPhoto, getAllUsers };

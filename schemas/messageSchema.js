@@ -15,6 +15,10 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
   location: {
     type: [Number], // [longitude, latitude]
     required: false,

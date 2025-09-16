@@ -33,6 +33,11 @@ router.put('/updatePetById/:petId',
     check('age').isNumeric().notEmpty(),
     check('description').notEmpty().isLength({min:10}),)    
 
+
+
+
+// TEST **************************************************************************
+router.get('/getAllUsers', petController.getAllUsers);
 router.delete('/deleteAllPets', petController.deleteAllPets)
 
 export default router;

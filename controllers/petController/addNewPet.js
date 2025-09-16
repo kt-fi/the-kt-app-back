@@ -30,7 +30,7 @@ const addNewPet = async (req, res, next) => {
   let newPet;
   let locationLastSeenDoc;
   let coords;
-
+   console.log('called');
   const sess = await mongoose.startSession();
   await sess.startTransaction();
 
