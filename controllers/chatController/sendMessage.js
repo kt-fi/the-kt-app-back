@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 const sendMessage = async (req, res, next) => {
   const { chatId, petId, recipientId, senderId, message, location, image } = req.body;
 
-
+console.log(senderId, recipientId, petId);
   // MUST FIX RECIPIENT AND SENDER IDS **********************************************************************
   //**********************************************************************************************************
   // Validate ids BEFORE querying
@@ -17,6 +17,7 @@ const sendMessage = async (req, res, next) => {
     !recipientId ||
     !petId
   ) {
+    
     console.error("Invalid senderId, recipientId, or petId");
     return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
   }

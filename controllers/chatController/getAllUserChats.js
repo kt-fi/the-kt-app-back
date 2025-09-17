@@ -23,7 +23,9 @@ const getAllUserChats = async (req, res, next) => {
   ],
     });
     if (!user) {
-      return res.status(404).json({ msg: "User not found" });
+      let error = new HttpError("User not found", 404);
+      res.status(404).json({ msg: error.message });
+      return next(error);
     }
     return res.status(200).json(user.chats);
   } catch (err) {
