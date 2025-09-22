@@ -6,21 +6,20 @@ import Chat from "../../schemas/chatSchema.js";
 import mongoose from "mongoose";
 
 const sendMessage = async (req, res, next) => {
+
   const { chatId, petId, recipientId, senderId, message, location, image } = req.body;
 
-console.log(senderId, recipientId, petId);
-  // MUST FIX RECIPIENT AND SENDER IDS **********************************************************************
-  //**********************************************************************************************************
-  // Validate ids BEFORE querying
-  if (
-    !senderId ||
-    !recipientId ||
-    !petId
-  ) {
+  console.log(petId);
+
+  // if (
+  //   !senderId ||
+  //   !recipientId ||
+  //   !petId
+  // ) {
     
-    console.error("Invalid senderId, recipientId, or petId");
-    return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
-  }
+  //   console.error("Invalid senderId, recipientId, or petId");
+  //   return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
+  // }
 
   const sess = await mongoose.startSession();
   sess.startTransaction();
@@ -28,11 +27,11 @@ console.log(senderId, recipientId, petId);
   try {
     let recipient = await User.findOne({ userId: recipientId }).session(sess);
     let sender = await User.findOne({ userId: senderId }).session(sess);
-    let pet = await Pet.findOne({ _id: petId }).session(sess);
+    let pet = await Pet.findOne({ petId }).session(sess);
 
-    console.log("Recipient:", recipient);
-    console.log("Sender:", sender);
-    console.log("Pet:", pet);
+    // console.log("Recipient:", recipient);
+    // console.log("Sender:", sender);
+    // console.log("Pet:", pet);
 
     if (!recipient || !sender) {
       console.error("Recipient or sender not found");
