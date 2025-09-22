@@ -11,15 +11,15 @@ const sendMessage = async (req, res, next) => {
 
   console.log(petId);
 
-  // if (
-  //   !senderId ||
-  //   !recipientId ||
-  //   !petId
-  // ) {
+  if (
+    !senderId ||
+    !recipientId ||
+    !petId
+  ) {
     
-  //   console.error("Invalid senderId, recipientId, or petId");
-  //   return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
-  // }
+    console.error("Invalid senderId, recipientId, or petId");
+    return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
+  }
 
   const sess = await mongoose.startSession();
   sess.startTransaction();
