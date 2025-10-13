@@ -11,7 +11,7 @@ const deletePetById = async (req, res, next) => {
   sess.startTransaction();
 
   try {
-    const pet = await Pet.findOneAndDelete({ petId: petId }, { session: sess });
+    const pet = await Pet.findOneAndDelete({ _id: petId }, { session: sess });
     if (!pet) {
       await sess.abortTransaction();
       sess.endSession();
@@ -54,7 +54,7 @@ const deletePetById = async (req, res, next) => {
       }
     );
 
-    res.json({ msg: "Pet Deleted Successfully", petId: pet.petId });
+    res.json({ msg: "Pet Deleted Successfully", petId: pet._id });
   } catch (err) {
     await sess.abortTransaction();
     sess.endSession();

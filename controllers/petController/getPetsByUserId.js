@@ -5,7 +5,7 @@ const getPetsByUserId = async (req, res, next) => {
   const userId = req.params.userId;
 
   try {
-    const user = await User.findOne({ userId })
+    const user = await User.findOne({ _id: userId })
     .populate("pets")
     .populate("location");
 

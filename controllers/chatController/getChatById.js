@@ -12,7 +12,7 @@ const getChatById = async (req, res, next) => {
         model: 'User',
         select: '-password' // Exclude password field
       }
-    }).populate('participants', '-password'); // Exclude password field from participants
+    }).populate('participants', '-password').populate('petId');
     if (!chat) {
       let err = new HttpError("Chat not found", 404);
       res.status(404).json({ msg: err.message });

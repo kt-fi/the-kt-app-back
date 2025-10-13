@@ -31,7 +31,6 @@ const signupEmail = async (req, res, next) => {
     const passwordHashed = await bcrypt.hash(password, saltRounds);
 
     user = new User({
-      userId: uuid(),
       userName,
       email,
       password: passwordHashed,

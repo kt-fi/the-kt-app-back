@@ -9,25 +9,25 @@ const sendMessage = async (req, res, next) => {
 
   const { chatId, petId, recipientId, senderId, message, location, image } = req.body;
 
-  console.log(petId);
+  console.log(' Request body:', req.body );
 
-  if (
-    !senderId ||
-    !recipientId ||
-    !petId
-  ) {
+  // if (
+  //   !senderId ||
+  //   !recipientId ||
+  //   !petId
+  // ) {
     
-    console.error("Invalid senderId, recipientId, or petId");
-    return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
-  }
+  //   console.error("Invalid senderId, recipientId, or petId");
+  //   return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
+  // }
 
   const sess = await mongoose.startSession();
   sess.startTransaction();
 
   try {
-    let recipient = await User.findOne({ userId: recipientId }).session(sess);
-    let sender = await User.findOne({ userId: senderId }).session(sess);
-    let pet = await Pet.findOne({ petId }).session(sess);
+    let recipient = await User.findOne({ _id: recipientId }).session(sess);
+    let sender = await User.findOne({ _id: senderId }).session(sess);
+    let pet = await Pet.findOne({ _id: petId }).session(sess);
 
     // console.log("Recipient:", recipient);
     // console.log("Sender:", sender);

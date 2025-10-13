@@ -12,7 +12,6 @@ const loginGoogle = async (req, res, next) => {
 
     if (!user) {
       user = new User({
-        userId: uuid(),
         userName: newUser.name,
         email: newUser.email,
         pets: [],

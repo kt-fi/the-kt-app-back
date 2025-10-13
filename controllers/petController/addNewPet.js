@@ -15,22 +15,24 @@ const addNewPet = async (req, res, next) => {
 
   const {
     userId,
-    petId,
     petName,
     age,
     description,
     otherInfo,
-    image,
+    photoId,
     status,
     dateLastSeen,
     locationLastSeen,
   } = req.body;
 
+
+
+
   let user;
   let newPet;
   let locationLastSeenDoc;
   let coords;
-   console.log('called');
+
   const sess = await mongoose.startSession();
   await sess.startTransaction();
 
@@ -61,28 +63,30 @@ const addNewPet = async (req, res, next) => {
       await locationLastSeenDoc.save({ session: sess });
     }
 
-    newPet = new Pet({
-      userId,
-      petId,
-      petName,
-      age,
-      description,
-      otherInfo,
-      image: `https://res.cloudinary.com/daxrovkug/image/upload/v1746460136/ktApp-petMainPic/${petId}.jpg`,
-      status,
-      dateLastSeen,
-      locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc._id : null,
-    });
-
-    await newPet.save({ session: sess });
-
-    user = await User.findOne({ userId });
+       user = await User.findOne({ _id:userId });
     if (!user) {
       await sess.abortTransaction();
       const error = new HttpError("User Not Found", 404);
       return res.status(404).json({ msg: error.message });
 
     }
+
+    newPet = new Pet({
+      userId: user._id,
+      petName,
+      age,
+      description,
+      otherInfo,
+      photoIds: [photoId],
+      status,
+      dateLastSeen,
+      locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc._id : null,
+    });
+
+    console.log('newPet before save:', newPet);
+    await newPet.save({ session: sess });
+
+ 
 
     user.pets.push(newPet);
     await user.save({ session: sess });
@@ -103,3 +107,6 @@ const addNewPet = async (req, res, next) => {
 };
 
 export default addNewPet;
+
+
+//  photoIds: [`https://res.cloudinary.com/daxrovkug/image/upload/v1746460136/ktApp-petMainPic/${photoIds[0]}.jpg`],

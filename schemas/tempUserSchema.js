@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const tempUserSchema = new Schema({
-    userId: { type: String, require: true },
     userName: { type: String, require: false },
     email: { type: String, require: false },
     token: { type: String, require: true },

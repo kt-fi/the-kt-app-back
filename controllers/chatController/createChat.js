@@ -6,7 +6,7 @@ import User from "../../schemas/userSchema.js";
 import Pet from "../../schemas/petSchema.js";
 import TempUser from "../../schemas/tempUserSchema.js";
 
-const getChat = async (req, res, next) => {
+const createChat = async (req, res, next) => {
   // if user a temp and not signed up create temp User
 
   const { chatId, senderUserData, recipientData, petId } = req.body;
@@ -18,28 +18,27 @@ const getChat = async (req, res, next) => {
 
     let chat;
 
-    pet = await Pet.findOne({ petId });
+    pet = await Pet.findOne({ _id: petId });
 
     if (senderUserData != null) {
-      user = await User.findOne({ userId: senderUserData.userId });
+      user = await User.findOne({ _id: senderUserData.userId });
     }
 
-    recipient = await User.findOne({ userId: recipientData.userId });
+    recipient = await User.findOne({ _id: recipientData.userId });
 
     if (chatId != null) {
-      chat = await Chat.findOne({ _id: chatId }).populate("participants");
+      chat = await Chat.findOne({ _id: chatId }).populate(["participants", "petId"]);
     }
 
     if (chatId == null || !chat) {
       chat = await Chat.findOne({
         petId: pet._id,
         participants: { $all: [user._id, recipient._id] },
-      }).populate("participants");
+      }).populate(["participants", "petId"]);
     }
 
     if (!user || user == null) {
       user = new TempUser({
-        userId: senderUserData.userId,
         userName: senderUserData.userName
           ? senderUserData.userName
           : "Anonymous",
@@ -47,16 +46,29 @@ const getChat = async (req, res, next) => {
         token: senderUserData.token,
       });
     }
-    await user.save();
+    
 
     if (!chat) {
-      chat = new Chat({
+       chat = new Chat({
         petId: pet._id,
         messages: [],
         participants: [user._id, recipient._id],
       });
       await chat.save();
+    recipient.chats.push(chat);
+    await recipient.save();
+      chat = await chat.populate(["participants", "petId"]);
+
+      if (senderUserData != null) {
+    user.chats.push(chat);
+    await user.save();
+}
     }
+
+
+
+   
+    
 
     if (!recipient) {
       return next(new HttpError("Recipient not found", 404));
@@ -64,11 +76,11 @@ const getChat = async (req, res, next) => {
     if (!pet) {
       return next(new HttpError("Pet not found", 404));
     }
-    res.json({ chat, user });
+    res.json({ chat});
   } catch (error) {
     console.log(error);
     return next(new HttpError("Creating chat failed, please try again", 500));
   }
 };
 
-export default getChat;
+export default createChat;

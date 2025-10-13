@@ -40,7 +40,7 @@ const updatePetById = async (req, res, next) => {
   }
 
   try {
-    pet = await Pet.findOne({ petId: petIdParam });
+    pet = await Pet.findOne({ _id: petIdParam });
 
     if (!pet) {
       const error = new HttpError("Pet Not Found", 404);
