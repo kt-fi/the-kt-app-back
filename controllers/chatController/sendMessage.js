@@ -7,7 +7,8 @@ import mongoose from "mongoose";
 
 const sendMessage = async (req, res, next) => {
 
-  const { chatId, petId, recipientId, senderId, message, location, image } = req.body;
+  const { chatId, petId, senderId, message, location, image } = req.body.message;
+  const recipientId = req.body.recipientId;
 
   console.log(' Request body:', req.body );
 
@@ -33,7 +34,7 @@ const sendMessage = async (req, res, next) => {
     // console.log("Sender:", sender);
     // console.log("Pet:", pet);
 
-    if (!recipient || !sender) {
+    if (!sender) {
       console.error("Recipient or sender not found");
       await sess.abortTransaction();
       sess.endSession();
