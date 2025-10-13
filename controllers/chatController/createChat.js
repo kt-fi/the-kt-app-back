@@ -10,7 +10,7 @@ const createChat = async (req, res, next) => {
   // if user a temp and not signed up create temp User
 
   const { chatId, senderUserData, recipientData, petId } = req.body;
-  console.log(req.body);
+
   try {
     let user;
     let recipient;
@@ -78,7 +78,6 @@ const createChat = async (req, res, next) => {
     }
     res.json({ chat});
   } catch (error) {
-    console.log(error);
     return next(new HttpError("Creating chat failed, please try again", 500));
   }
 };

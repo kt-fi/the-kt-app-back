@@ -83,7 +83,6 @@ const addNewPet = async (req, res, next) => {
       locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc._id : null,
     });
 
-    console.log('newPet before save:', newPet);
     await newPet.save({ session: sess });
 
  
@@ -93,7 +92,7 @@ const addNewPet = async (req, res, next) => {
 
     await sess.commitTransaction();
     sess.endSession();
-    console.log('petn: newPet', newPet);
+  
     res.json(newPet);
     return;
     } catch (err) {

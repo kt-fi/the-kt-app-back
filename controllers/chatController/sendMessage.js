@@ -10,7 +10,7 @@ const sendMessage = async (req, res, next) => {
   const { chatId, petId, senderId, message, location, image } = req.body.message;
   const recipientId = req.body.recipientId;
 
-  console.log(' Request body:', req.body );
+
 
   // if (
   //   !senderId ||
