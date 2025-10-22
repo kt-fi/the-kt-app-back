@@ -65,11 +65,6 @@ const createChat = async (req, res, next) => {
 }
     }
 
-
-
-   
-    
-
     if (!recipient) {
       return next(new HttpError("Recipient not found", 404));
     }
