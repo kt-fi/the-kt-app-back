@@ -12,6 +12,7 @@ export { default as getPetsByUserId } from './getPetsByUserId.js';
 export { default as getAllLostPets } from './getAllLostPets.js';
 export { default as deletePetById } from './deletePetById.js';
 export { default as updatePetById } from './updatePetById.js';
+export { default as getPetById } from './getPetById.js';
 
 // TEST METHOD -----------------------------------------------------------------------
 

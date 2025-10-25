@@ -14,6 +14,7 @@ let petSchema = new Schema({
     status: {type: String, require: true},
     dateLastSeen: { type: Date, default: Date.now },
     locationLastSeen:{ type: Schema.Types.ObjectId, ref: 'Location' },
+    spottedLocations: [{ type: Schema.Types.ObjectId, ref: 'Location' }],
 })
 
 export default mongoose.model('Pet', petSchema);

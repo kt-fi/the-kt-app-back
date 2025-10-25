@@ -16,7 +16,9 @@ router.post('/newPet',
     check('description').notEmpty().isLength({min:10}),
     petController.addNewPet);
     
-router.get('/getPetsByUserId/:userId', petController.getPetsByUserId)
+router.get('/getPetsByUserId/:userId', petController.getPetsByUserId);
+
+router.get('/getPetById/:petId', petController.getPetById);
 
 router.get('/getAllLostPets/:lat/:lon/:radius', 
     // verifyToken,
