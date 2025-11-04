@@ -38,12 +38,18 @@ const createChat = async (req, res, next) => {
     }
 
     if (!user || user == null) {
-      user = new TempUser({
+      //SET TEMP USERS
+      user = new User({
         userName: senderUserData.userName
           ? senderUserData.userName
           : "Anonymous",
-        email: senderUserData.email,
-        token: senderUserData.token,
+        userType: senderUserData.userType ? senderUserData.userType : "temp",
+        email: senderUserData.email ? senderUserData.email : "no_email",
+        password: senderUserData.password ? senderUserData.password : "no_password",
+        telephone: senderUserData.telephone ? senderUserData.telephone : "no_telephone",
+        address: senderUserData.address ? senderUserData.address : "no_address",
+        location: senderUserData.location ? senderUserData.location : "no_location",
+        chats: [],
       });
     }
     
@@ -59,10 +65,10 @@ const createChat = async (req, res, next) => {
     await recipient.save();
       chat = await chat.populate(["participants", "petId"]);
 
-      if (senderUserData != null) {
+      
     user.chats.push(chat);
     await user.save();
-}
+
     }
 
     if (!recipient) {

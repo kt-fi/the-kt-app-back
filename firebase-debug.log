@@ -1,0 +1,137 @@
+[debug] [2025-10-27T00:18:59.624Z] ----------------------------------------------------------------------
+[debug] [2025-10-27T00:18:59.627Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create kt-web-app --display-name My New Project
+[debug] [2025-10-27T00:18:59.627Z] CLI Version:   14.22.0
+[debug] [2025-10-27T00:18:59.627Z] Platform:      win32
+[debug] [2025-10-27T00:18:59.627Z] Node Version:  v22.19.0
+[debug] [2025-10-27T00:18:59.628Z] Time:          Mon Oct 27 2025 01:18:59 GMT+0100 (Central European Standard Time)
+[debug] [2025-10-27T00:18:59.628Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-27T00:18:59.630Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-10-27T00:18:59.678Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-27T00:18:59.679Z] > authorizing via signed-in user (katie5five.5@gmail.com)
+[debug] [2025-10-27T00:18:59.683Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:18:59.683Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:18:59.683Z] > refreshing access token with scopes: []
+[debug] [2025-10-27T00:18:59.684Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-10-27T00:18:59.684Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:18:59.809Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2025-10-27T00:18:59.809Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:18:59.809Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-10-27T00:18:59.810Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"kt-web-app","name":"My New Project"}
+[debug] [2025-10-27T00:18:59.910Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-10-27T00:18:59.910Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-10-27T00:19:00.403Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 401
+[debug] [2025-10-27T00:19:00.403Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":401,"message":"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.","status":"UNAUTHENTICATED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"ACCESS_TOKEN_TYPE_UNSUPPORTED","metadata":{"method":"google.cloudresourcemanager.v1.Projects.CreateProject","service":"cloudresourcemanager.googleapis.com"}}]}}
+[debug] [2025-10-27T00:19:00.403Z] Got a 401 Unauthenticated error for a call that required authentication. Refreshing tokens.
+[debug] [2025-10-27T00:19:00.403Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:19:00.403Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:19:00.403Z] > refreshing access token with scopes: []
+[debug] [2025-10-27T00:19:00.404Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-10-27T00:19:00.404Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:19:00.443Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2025-10-27T00:19:00.443Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:19:00.501Z] FirebaseError: Request to https://cloudresourcemanager.googleapis.com/v1/projects had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:53:12)
+    at RetryOperation._fn (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[error] 
+[error] Error: Failed to create project. See firebase-debug.log for more info.
+[debug] [2025-10-27T00:21:00.534Z] ----------------------------------------------------------------------
+[debug] [2025-10-27T00:21:00.537Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create my-new-project-id --display-name kt-project-web-app
+[debug] [2025-10-27T00:21:00.538Z] CLI Version:   14.22.0
+[debug] [2025-10-27T00:21:00.538Z] Platform:      win32
+[debug] [2025-10-27T00:21:00.538Z] Node Version:  v22.19.0
+[debug] [2025-10-27T00:21:00.538Z] Time:          Mon Oct 27 2025 01:21:00 GMT+0100 (Central European Standard Time)
+[debug] [2025-10-27T00:21:00.538Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-27T00:21:00.544Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-27T00:21:00.545Z] > authorizing via signed-in user (katie5five.5@gmail.com)
+[debug] [2025-10-27T00:21:00.549Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:21:00.550Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:21:00.550Z] > refreshing access token with scopes: []
+[debug] [2025-10-27T00:21:00.552Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-10-27T00:21:00.552Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:21:00.692Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2025-10-27T00:21:00.692Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:21:00.693Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-10-27T00:21:00.693Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"my-new-project-id","name":"kt-project-web-app"}
+[debug] [2025-10-27T00:21:01.286Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 401
+[debug] [2025-10-27T00:21:01.286Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":401,"message":"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.","status":"UNAUTHENTICATED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"ACCESS_TOKEN_TYPE_UNSUPPORTED","metadata":{"method":"google.cloudresourcemanager.v1.Projects.CreateProject","service":"cloudresourcemanager.googleapis.com"}}]}}
+[debug] [2025-10-27T00:21:01.286Z] Got a 401 Unauthenticated error for a call that required authentication. Refreshing tokens.
+[debug] [2025-10-27T00:21:01.286Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:21:01.286Z] Checked if tokens are valid: false, expires at: 1739755880523
+[debug] [2025-10-27T00:21:01.286Z] > refreshing access token with scopes: []
+[debug] [2025-10-27T00:21:01.286Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-10-27T00:21:01.286Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:21:01.325Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2025-10-27T00:21:01.325Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-10-27T00:21:01.403Z] FirebaseError: Request to https://cloudresourcemanager.googleapis.com/v1/projects had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:53:12)
+    at RetryOperation._fn (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[error] 
+[error] Error: Failed to create project. See firebase-debug.log for more info.
+[debug] [2025-11-04T01:43:06.410Z] ----------------------------------------------------------------------
+[debug] [2025-11-04T01:43:06.413Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create the-katie-project2013
+[debug] [2025-11-04T01:43:06.413Z] CLI Version:   14.22.0
+[debug] [2025-11-04T01:43:06.414Z] Platform:      win32
+[debug] [2025-11-04T01:43:06.414Z] Node Version:  v22.19.0
+[debug] [2025-11-04T01:43:06.414Z] Time:          Tue Nov 04 2025 02:43:06 GMT+0100 (Central European Standard Time)
+[debug] [2025-11-04T01:43:06.414Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-04T01:43:06.416Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-11-04T01:43:06.467Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-04T01:43:06.467Z] > authorizing via signed-in user (katie5five.5@gmail.com)
+[debug] [2025-11-04T01:43:06.844Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-11-04T01:43:06.844Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-11-04T01:43:13.853Z] Checked if tokens are valid: false, expires at: 1761585290755
+[debug] [2025-11-04T01:43:13.853Z] Checked if tokens are valid: false, expires at: 1761585290755
+[debug] [2025-11-04T01:43:13.853Z] > refreshing access token with scopes: []
+[debug] [2025-11-04T01:43:13.854Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-04T01:43:13.854Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-04T01:43:13.946Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-04T01:43:13.946Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-04T01:43:13.953Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-11-04T01:43:13.953Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"the-katie-project2013","name":"the-katie-project2013"}
+[debug] [2025-11-04T01:43:14.245Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 200
+[debug] [2025-11-04T01:43:14.245Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"name":"operations/create_project.global.5641562813257286596"}
+[debug] [2025-11-04T01:43:14.246Z] Checked if tokens are valid: true, expires at: 1762224192947
+[debug] [2025-11-04T01:43:14.246Z] Checked if tokens are valid: true, expires at: 1762224192947
+[debug] [2025-11-04T01:43:14.246Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.5641562813257286596 [none]
+[debug] [2025-11-04T01:43:14.878Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.5641562813257286596 200
+[debug] [2025-11-04T01:43:14.878Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.5641562813257286596 {"name":"operations/create_project.global.5641562813257286596","metadata":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus","ready":true},"done":true,"error":{"code":8,"message":"The project cannot be created because you have exceeded your allotted project quota.","details":[{"@type":"type.googleapis.com/google.rpc.QuotaFailure","violations":[{"description":"The project cannot be created because you have exceeded your allotted project quota."}]}]}}
+[debug] [2025-11-04T01:43:14.880Z] FirebaseError: The project cannot be created because you have exceeded your allotted project quota.
+    at OperationPoller.poll (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\operation-poller.js:24:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async createCloudProject (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:227:29)
+    at async createFirebaseProjectAndLog (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:87:9)
+[error] 
+[error] Error: Failed to create project. See firebase-debug.log for more info.
+[debug] [2025-11-04T01:43:29.311Z] ----------------------------------------------------------------------
+[debug] [2025-11-04T01:43:29.314Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js projects:create the-katie-project20132025
+[debug] [2025-11-04T01:43:29.314Z] CLI Version:   14.22.0
+[debug] [2025-11-04T01:43:29.314Z] Platform:      win32
+[debug] [2025-11-04T01:43:29.314Z] Node Version:  v22.19.0
+[debug] [2025-11-04T01:43:29.315Z] Time:          Tue Nov 04 2025 02:43:29 GMT+0100 (Central European Standard Time)
+[debug] [2025-11-04T01:43:29.315Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-04T01:43:29.320Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-04T01:43:29.320Z] > authorizing via signed-in user (katie5five.5@gmail.com)
+[debug] [2025-11-04T01:43:30.565Z] Checked if tokens are valid: true, expires at: 1762224192947
+[debug] [2025-11-04T01:43:30.565Z] Checked if tokens are valid: true, expires at: 1762224192947
+[debug] [2025-11-04T01:43:30.566Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-11-04T01:43:30.567Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"the-katie-project20132025","name":"the-katie-project20132025"}
+[debug] [2025-11-04T01:43:31.726Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 200
+[debug] [2025-11-04T01:43:31.726Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"name":"operations/create_project.global.5474172316101752856"}
+[debug] [2025-11-04T01:43:31.727Z] Checked if tokens are valid: true, expires at: 1762224192947
+[debug] [2025-11-04T01:43:31.727Z] Checked if tokens are valid: true, expires at: 1762224192947
+[debug] [2025-11-04T01:43:31.727Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.5474172316101752856 [none]
+[debug] [2025-11-04T01:43:32.335Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.5474172316101752856 200
+[debug] [2025-11-04T01:43:32.335Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/operations/create_project.global.5474172316101752856 {"name":"operations/create_project.global.5474172316101752856","metadata":{"@type":"type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus","ready":true},"done":true,"error":{"code":8,"message":"The project cannot be created because you have exceeded your allotted project quota.","details":[{"@type":"type.googleapis.com/google.rpc.QuotaFailure","violations":[{"description":"The project cannot be created because you have exceeded your allotted project quota."}]}]}}
+[debug] [2025-11-04T01:43:32.337Z] FirebaseError: The project cannot be created because you have exceeded your allotted project quota.
+    at OperationPoller.poll (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\operation-poller.js:24:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async createCloudProject (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:227:29)
+    at async createFirebaseProjectAndLog (C:\Users\Chris Hillman\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:87:9)
+[error] 
+[error] Error: Failed to create project. See firebase-debug.log for more info.

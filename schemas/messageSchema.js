@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const messageSchema = new mongoose.Schema({
   chatId: {
@@ -9,7 +9,7 @@ const messageSchema = new mongoose.Schema({
   senderId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: false,
   },
   message: {
     type: String,
@@ -20,8 +20,7 @@ const messageSchema = new mongoose.Schema({
     default: Date.now,
   },
   location: {
-    type: [Number], // [longitude, latitude]
-    required: false,
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Location", required: false }],
   },
   image: {
     type: String, // URL or base64 string
@@ -29,10 +28,12 @@ const messageSchema = new mongoose.Schema({
   },
   sentAt: {
     type: Date,
+    required: true,
     default: Date.now,
   },
   seen: {
     type: Boolean,
+    required: true,
     default: false,
   },
 });

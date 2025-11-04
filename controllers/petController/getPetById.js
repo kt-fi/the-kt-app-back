@@ -4,7 +4,7 @@ import Pet from "../../schemas/petSchema.js";
 const getPetById = async (req, res) => {
     const petId = req.params.petId;
 
-    
+
     let pet;
     try {
 
