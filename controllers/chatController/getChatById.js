@@ -7,17 +7,20 @@ const getChatById = async (req, res, next) => {
   try {
     const chat = await Chat.findById(chatId).populate({
       path: 'messages',
-      populate: {
-        path: 'senderId',
-        model: 'User',
-        select: '-password' // Exclude password field
-      }
+      populate: [
+    {
+      path: 'senderId',
+      model: 'User',
+      select: '-password'
+    }
+  ]
     }).populate('participants', '-password').populate('petId');
     if (!chat) {
       let err = new HttpError("Chat not found", 404);
       res.status(404).json({ msg: err.message });
       return next(err);
     }
+
     return res.status(200).json({ chat });
   } catch (err) {
     let error = new HttpError("Server error", 500);

@@ -48,7 +48,7 @@ const quickMessage = async (req, res, next) => {
     }).save({ session: sess });
     newMessage = await new Message({
       chatId: chat._id,
-      location: locationCoords._id,
+      location: location,
       senderId: null,
       message: message,
       sentAt: new Date(),

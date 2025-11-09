@@ -20,7 +20,8 @@ const getAllChatMessagesById = async (req, res, next) => {
         model: User,
         '-password': 0, // Exclude password field
       },
-    });
+    })
+    
     if (!chat) {
       let err = new HttpError("Chat not found", 404);
       res.status(404).json({ msg: "Chat not found" });
