@@ -9,7 +9,18 @@ dotenv.config();
 
 const app = express();
 const http = createServer(app);
-global.io = new SocketIOServer(http);
+
+const server = createServer(app);
+
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: "*", // MUST CHANGE FOR PRODUCTION
+    methods: ["GET", "POST"]
+  }
+});
+
+export { io, userSocketMap };
+
 import * as cloudinary from './utils/cloudinary.js';
 
 import appRouter from './routers/authRouter.js';
@@ -21,6 +32,30 @@ import locationRouter from './routers/locationRouter.js';
 //   console.log(`[${req.method}] ${req.originalUrl}`);
 //   next();
 // });
+const userSocketMap = new Map();
+
+io.on('connection', (socket) => {
+  const userId = socket.handshake.query.userId;
+  // Associate userId with socket.id
+  console.log('User connected:', userId, socket.id);
+if (userId) {
+    socket.join(userId); // <-- This is the missing line!
+    console.log(`Socket ${socket.id} joined room ${userId}`);
+        io.to(userId).emit('new_message', { text: 'Hello after join!' });
+
+  }
+  
+  socket.on('disconnect', () => {
+    if (socket.userId) {
+      userSocketMap.delete(socket.userId);
+      console.log('User disconnected:', socket.userId, socket.id);
+    }
+  });
+});
+
+
+
+
 app.use(cors());
 
 app.use(express.json({limit: '100mb', extended: true}));
@@ -41,6 +76,7 @@ mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGOD
 // mongoose.connect("mongodb://127.0.0.1:27017/kt-app");;
 
 
-http.listen(process.env.PORT || 3001, ()=>{
+
+server.listen(process.env.PORT || 3001, ()=>{
     console.log('Server Running')
 })

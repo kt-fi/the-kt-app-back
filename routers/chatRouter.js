@@ -9,6 +9,8 @@ router.get("/getAllChatMessagesById/:chatId", chatController.getAllChatMessagesB
 router.get("/getChatById/:chatId", chatController.getChatById);
 router.get("/getAllUserChats/:userId", chatController.getAllUserChats);
 
+router.put("/markMessageRead", chatController.markMessageRead);
+
 router.post("/quickMessage", chatController.quickMessage);
 
 export default router;

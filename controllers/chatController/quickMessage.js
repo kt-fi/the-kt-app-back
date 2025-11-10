@@ -5,6 +5,9 @@ import Pet from "../../schemas/petSchema.js";
 import Message from "../../schemas/messageSchema.js";
 import Location from "../../schemas/locationSchema.js";
 
+import { io } from '../../app.js'; // <-- Add this import
+
+
 const quickMessage = async (req, res, next) => {
   const { message, recipientId, petId, location } = req.body;
   let chat;
@@ -60,6 +63,17 @@ const quickMessage = async (req, res, next) => {
     await recipient.save({ session: sess });
     await chat.save({ session: sess });
     await sess.commitTransaction();
+
+    
+    if (recipientId) {
+  io.to(recipientId).emit('new_message', {
+    chatId: chat._id,
+    message: newMessage,
+    chat: chat,
+    type: 'quick_message'
+  });
+}
+
 
     res.json({ message: "Quick message sent", chat, newMessage });
   } catch (err) {
