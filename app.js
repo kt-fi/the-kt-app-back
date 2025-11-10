@@ -13,7 +13,6 @@ const http = createServer(app);
 const server = createServer(app);
 
 const io = new SocketIOServer(server, {
-   "forceBase64" : 1,
   cors: {
      origin: [
       "capacitor://localhost",
