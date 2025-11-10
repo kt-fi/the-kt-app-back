@@ -49,6 +49,7 @@ const quickMessage = async (req, res, next) => {
       messages: [],
       participants: [recipient._id],
     }).save({ session: sess });
+
     newMessage = await new Message({
       chatId: chat._id,
       location: location,
@@ -64,13 +65,15 @@ const quickMessage = async (req, res, next) => {
     await chat.save({ session: sess });
     await sess.commitTransaction();
 
+    let getChat = await Chat.findById(chat._id)
+      .populate("petId")
+      .populate("participants", "-password")
+      .populate("messages");
+
     
-    if (recipientId) {
-  io.to(recipientId).emit('new_message', {
-    chatId: chat._id,
-    message: newMessage,
-    chat: chat,
-    type: 'quick_message'
+    if (recipientId && getChat) {
+      io.to(recipientId).emit('new_message', {
+      getChat,
   });
 }
 
