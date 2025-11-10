@@ -15,7 +15,10 @@ const server = createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
      origin: [
-      "*"
+      "capacitor://localhost",
+      "http://localhost",
+      "http://localhost:8100",
+      "https://the-kt-app.onrender.com"
     ],
     methods: ["GET", "POST"]
   }
