@@ -14,13 +14,13 @@ const server = createServer(app);
 
 const io = new SocketIOServer(server, {
   cors: {
-    origin: [
-      "http://localhost:8100", // for local dev
-      "https://kt-app-web-app.onrender.com", // your production frontend
-      // add any other allowed origins here
+     origin: [
+      "capacitor://localhost",
+      "http://localhost",
+      "http://localhost:8100",
+      "https://kt-app-web-app.onrender.com"
     ],
-    methods: ["GET", "POST"],
-    credentials: true // only if you use cookies/auth
+    methods: ["GET", "POST"]
   }
 });
 
