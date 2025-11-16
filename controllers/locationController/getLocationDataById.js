@@ -5,7 +5,7 @@ const getLocationDataById = async (req, res, next) => {
 
   const locationId = req.params.locationId;
 
-  console.log("Received request for location ID:", locationId);
+
   
   let locationData;
 

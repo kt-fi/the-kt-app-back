@@ -35,7 +35,7 @@ const updatePetById = async (req, res, next) => {
 
   if (!petIdParam) {
     const error = new HttpError("Pet ID is required", 400);
-    console.log(error);
+
     return res.status(400).json({ msg: error.message });
   }
 
@@ -44,7 +44,7 @@ const updatePetById = async (req, res, next) => {
 
     if (!pet) {
       const error = new HttpError("Pet Not Found", 404);
-      console.log(error);
+
       return res.status(404).json({ msg: error.message });
     }
 
@@ -84,7 +84,7 @@ const updatePetById = async (req, res, next) => {
     return res.json(pet);
   } catch (err) {
     const error = new HttpError("Error Updating Pet", 500);
-    console.log(err);
+
     return res.status(500).json({ msg: error.message });
   }
 };

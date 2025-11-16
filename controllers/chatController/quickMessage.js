@@ -6,14 +6,17 @@ import Message from "../../schemas/messageSchema.js";
 import Location from "../../schemas/locationSchema.js";
 
 import { io } from '../../app.js'; // <-- Add this import
+import { get } from "http";
 
 
 const quickMessage = async (req, res, next) => {
-  const { message, recipientId, petId, location } = req.body;
+  const { message, recipientId, petId, location, chatType } = req.body;
   let chat;
   let pet;
   let recipient;
   let locationCoords;
+
+  console.log("Received quick message request:", req.body);
 
   let newMessage;
 
@@ -72,9 +75,10 @@ const quickMessage = async (req, res, next) => {
 
     
     if (recipientId && getChat) {
-      io.to(recipientId).emit('new_message', {
-      getChat,
+      io.to(recipientId).emit('quick_message', {
+      getChat
   });
+  console.log("Emitted quick_message event to recipient:", recipientId);
 }
 
 

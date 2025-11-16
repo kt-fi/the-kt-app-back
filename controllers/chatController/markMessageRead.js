@@ -2,8 +2,7 @@ import Message from "../../schemas/messageSchema.js";
 
 const markMessageRead = async (req, res, next) => {
   const { messageId, userId } = req.body;
-  console.log(req.body);
-  console.log("Marking message as read, ID:", messageId);
+
 
   try {
     const message = await Message.findByIdAndUpdate(messageId, { seen: true });

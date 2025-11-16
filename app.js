@@ -14,14 +14,24 @@ const server = createServer(app);
 
 const io = new SocketIOServer(server, {
   cors: {
-     origin: [
+  origin: (origin, callback) => {
+    // Optionally log origins for debugging
+    // List of allowed origins
+    const allowedOrigins = [
       "capacitor://localhost",
       "http://localhost",
       "http://localhost:8100",
+      "http://localhost:8101",
       "https://the-kt-app.onrender.com"
-    ],
-    methods: ["GET", "POST"]
-  }
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ['GET', 'POST']
+}
 });
 
 export { io, userSocketMap };
@@ -42,10 +52,10 @@ const userSocketMap = new Map();
 io.on('connection', (socket) => {
   const userId = socket.handshake.query.userId;
   // Associate userId with socket.id
-  console.log('User connected:', userId, socket.id);
+
 if (userId) {
     socket.join(userId); // <-- This is the missing line!
-    console.log(`Socket ${socket.id} joined room ${userId}`);
+
         io.to(userId).emit('new_message', { text: 'Hello after join!' });
 
   }
@@ -53,7 +63,7 @@ if (userId) {
   socket.on('disconnect', () => {
     if (socket.userId) {
       userSocketMap.delete(socket.userId);
-      console.log('User disconnected:', socket.userId, socket.id);
+  
     }
   });
 });

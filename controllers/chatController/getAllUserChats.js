@@ -28,7 +28,7 @@ const getAllUserChats = async (req, res, next) => {
       res.status(404).json({ msg: error.message });
       return next(error);
     }
-    console.log(user.chats);
+ 
     return res.status(200).json(user.chats);
   } catch (err) {
     let error = new HttpError("Server error", 500);
