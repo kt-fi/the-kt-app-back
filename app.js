@@ -54,7 +54,7 @@ const userSocketMap = new Map();
 
 io.on('connection', (socket) => {
   const userId = socket.handshake.query.userId;
-  // Associate userId with socket.id
+ console.log(`User connected: ${userId}`);
 
 if (userId) {
     socket.join(userId); // <-- This is the missing line!
