@@ -12,27 +12,34 @@ const http = createServer(app);
 
 const server = createServer(app);
 
+// const io = new SocketIOServer(server, {
+//   cors: {
+//   origin: (origin, callback) => {
+//     // Optionally log origins for debugging
+//     // List of allowed origins
+//     const allowedOrigins = [
+//       "capacitor://localhost",
+//       "http://localhost",
+//       "http://localhost:8100",
+//       "http://localhost:8101",
+//       "https://the-kt-app.onrender.com"
+      
+//     ];
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   methods: ['GET', 'POST']
+// }
+// });
+
 const io = new SocketIOServer(server, {
   cors: {
-  origin: (origin, callback) => {
-    // Optionally log origins for debugging
-    // List of allowed origins
-    const allowedOrigins = [
-      "capacitor://localhost",
-      "http://localhost",
-      "http://localhost:8100",
-      "http://localhost:8101",
-      "https://the-kt-app.onrender.com"
-      
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ['GET', 'POST']
-}
+    origin: "*", // Allow all origins (including Capacitor, web, Android)
+    methods: ["GET", "POST"]
+  }
 });
 
 

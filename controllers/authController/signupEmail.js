@@ -13,6 +13,8 @@ const signupEmail = async (req, res, next) => {
     return res.status(422).json({ msg: error.message, errors: errors.array() });
   }
 
+  console.log("Request Body:", req.body);
+
   const { userName, email, password, telephone } = req.body;
   let user;
   const saltRounds = 10;
