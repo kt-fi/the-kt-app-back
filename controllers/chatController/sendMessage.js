@@ -4,22 +4,21 @@ import Pet from "../../schemas/petSchema.js";
 import HttpError from "../../httpError.js";
 import Chat from "../../schemas/chatSchema.js";
 
-import { io } from '../../app.js'; // <-- Add this import
+import { io } from "../../app.js"; // <-- Add this import
 import mongoose from "mongoose";
 
 const sendMessage = async (req, res, next) => {
-
-  const { chatId, petId, senderId, message, location, image } = req.body.message;
+  const { chatId, senderId, message, location, image } = req.body.message;
   const recipientId = req.body.recipient;
+  const petId = req.body.petId;
 
-
-
+  console.log(req.body.message);
   // if (
   //   !senderId ||
   //   !recipientId ||
   //   !petId
   // ) {
-    
+
   //   console.error("Invalid senderId, recipientId, or petId");
   //   return res.status(400).json({ msg: "Invalid senderId, recipientId, or petId" });
   // }
@@ -31,8 +30,6 @@ const sendMessage = async (req, res, next) => {
     let recipient = await User.findOne({ _id: recipientId }).session(sess);
     let sender = await User.findOne({ _id: senderId }).session(sess);
     let pet = await Pet.findOne({ _id: petId }).session(sess);
-
-
 
     if (!sender) {
       console.error("Recipient or sender not found");
@@ -75,13 +72,12 @@ const sendMessage = async (req, res, next) => {
     await sess.commitTransaction();
     sess.endSession();
 
-
     // SOCKET FUNCTIONALITY
-    
     if (recipientId && chat && newMessage) {
-          io.to(recipientId).emit('new_message', {
-          newMessage,
-          //message only
+      io.to(recipientId).emit("new_message", {
+        newMessage,
+        petId,
+        image: pet.photoIds[0]
       });
     }
 
