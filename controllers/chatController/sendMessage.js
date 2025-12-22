@@ -12,7 +12,6 @@ const sendMessage = async (req, res, next) => {
   const recipientId = req.body.recipient;
   const petId = req.body.petId;
 
-  console.log(req.body.message);
   // if (
   //   !senderId ||
   //   !recipientId ||
@@ -26,7 +25,11 @@ const sendMessage = async (req, res, next) => {
   const sess = await mongoose.startSession();
   sess.startTransaction();
 
-  try {
+  console.log(req.body);
+
+
+    try {
+
     let recipient = await User.findOne({ _id: recipientId }).session(sess);
     let sender = await User.findOne({ _id: senderId }).session(sess);
     let pet = await Pet.findOne({ _id: petId }).session(sess);
@@ -37,6 +40,7 @@ const sendMessage = async (req, res, next) => {
       sess.endSession();
       return res.status(404).json({ msg: "Recipient or sender not found" });
     }
+
 
     let chat = null;
     if (chatId && mongoose.Types.ObjectId.isValid(chatId)) {
@@ -74,6 +78,7 @@ const sendMessage = async (req, res, next) => {
 
     // SOCKET FUNCTIONALITY
     if (recipientId && chat && newMessage) {
+      console.log("Emitting new_message to recipient:", recipientId);
       io.to(recipientId).emit("new_message", {
         newMessage,
         petId,

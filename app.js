@@ -65,7 +65,6 @@ io.on('connection', (socket) => {
 
 if (userId) {
     socket.join(userId); // <-- This is the missing line!
-
         io.to(userId).emit('new_message', { text: 'Hello after join!' });
 
   }
@@ -73,7 +72,6 @@ if (userId) {
   socket.on('disconnect', () => {
     if (socket.userId) {
       userSocketMap.delete(socket.userId);
-  
     }
   });
 });
