@@ -82,7 +82,7 @@ const sendMessage = async (req, res, next) => {
       io.to(recipientId).emit("new_message", {
         newMessage,
         petId,
-        image: pet.photoIds[0] || ""
+        image: ""
       });
     }
 
