@@ -82,7 +82,7 @@ const sendMessage = async (req, res, next) => {
       io.to(recipientId).emit("new_message", {
         newMessage,
         petId,
-        image: ""
+        image: pet.photoIds.length > 0 && pet.photoIds ? pet.photoIds[0] : pet.petName.charAt(0).toUpperCase(),
       });
     }
 
