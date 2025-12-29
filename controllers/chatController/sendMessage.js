@@ -12,6 +12,7 @@ const sendMessage = async (req, res, next) => {
   const recipientId = req.body.recipient;
   const petId = req.body.petId;
 
+
   // if (
   //   !senderId ||
   //   !recipientId ||
