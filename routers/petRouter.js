@@ -1,50 +1,54 @@
-import express from 'express';
-import * as petController from '../controllers/petController/petController.js';
+import express from "express";
+import * as petController from "../controllers/petController/petController.js";
 const router = express.Router();
-import { check } from 'express-validator';
-import verifyToken from '../verifyJWT.js';
-import upload from '../utils/multerConfig.js';
-import { uploadPetMainPic} from '../utils/multerConfig.js';
+import { check } from "express-validator";
+import verifyToken from "../verifyJWT.js";
+import upload from "../utils/multerConfig.js";
+import { uploadPetMainPic } from "../utils/multerConfig.js";
 
+router.post(
+  "/uploadPhoto",
+  uploadPetMainPic.single("file"),
+  petController.uploadPhoto
+);
 
-
-router.post('/uploadPhoto', uploadPetMainPic.single('file'), petController.uploadPhoto);
-
-
-
-router.post('/newPet',
+router.post(
+  "/newPet",
   //  verifyToken,
 
-    check('petName').notEmpty().isLength({min: 3}),
-    check('age').isNumeric({max:30}).notEmpty(),
-    check('description').notEmpty().isLength({min:10}),
-    petController.addNewPet);
-    
-router.get('/getPetsByUserId/:userId', petController.getPetsByUserId);
+  check("petName").notEmpty().isLength({ min: 3 }),
+  check("age").isNumeric({ max: 30 }).notEmpty(),
+  check("description").notEmpty().isLength({ min: 10 }),
+  petController.addNewPet
+);
 
-router.get('/getPetById/:petId', petController.getPetById);
+router.get("/getPetsByUserId/:userId", petController.getPetsByUserId);
 
-router.get('/getAllLostPets/:lat/:lon/:radius', 
-    // verifyToken,
-     petController.getAllLostPets)
+router.get("/getPetById/:petId", petController.getPetById);
 
-router.delete('/deletePetById/:petId',
-     verifyToken, 
-     petController.deletePetById)
+router.get(
+  "/getAllLostPets/:lat/:lon/:radius",
+  // verifyToken,
+  petController.getAllLostPets
+);
 
-router.put('/updatePetById/:petId',
-    //  verifyToken,
-      petController.updatePetById,
-    check('petName').notEmpty().isLength({min: 3}),
-    check('age').isNumeric().notEmpty(),
-    check('description').notEmpty().isLength({min:10}),)    
+router.delete(
+  "/deletePetById/:petId",
+  verifyToken,
+  petController.deletePetById
+);
 
-
-
+router.put(
+  "/updatePetById/:petId",
+  //  verifyToken,
+  petController.updatePetById,
+  check("petName").notEmpty().isLength({ min: 3 }),
+  check("age").isNumeric().notEmpty(),
+  check("description").notEmpty().isLength({ min: 10 })
+);
 
 // TEST **************************************************************************
-router.get('/getAllUsers', petController.getAllUsers);
-router.delete('/deleteAllPets', petController.deleteAllPets)
+router.get("/getAllUsers", petController.getAllUsers);
+router.delete("/deleteAllPets", petController.deleteAllPets);
 
 export default router;
-
