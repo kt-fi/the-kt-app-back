@@ -1,39 +1,43 @@
 import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-
-const storage = new CloudinaryStorage({
-  
-  cloudinary: cloudinary,
-  params: {
-    folder: "ktApp-petMainPic", // Folder name in your Cloudinary account
-    allowed_formats: ["jpg", "jpeg", "png", "JPG", "gif"], // Allowed file formats
-    transformation: [
-      { width: 400, height: 300, crop: "fill", quality: "auto:eco" } // Add quality here
-    ],
-
-    public_id: (req, file) => {
-      const timestamp = Date.now();
-      const originalName = file.originalname.replace(/\s+/g, "_");
-      return `${originalName}`; // Unique file name -- May Change to include timestamp
+// Helper function to create storage config
+const createCloudinaryStorage = (folderName) => {
+  return new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: folderName,
+      allowed_formats: ["jpg", "jpeg", "png", "JPG", "gif"],
+      transformation: [
+        { width: 400, height: 300, crop: "fill", quality: "auto:eco" }
+      ],
+      public_id: (req, file) => {
+        const originalName = file.originalname.replace(/\s+/g, "_");
+        return `${originalName}`;
+      },
     },
-  },
+  });
+};
+
+// Create different upload instances for different folders
+export const uploadPetMainPic = multer({
+  storage: createCloudinaryStorage("ktApp-petMainPic"),
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-
-// Initialize multer with Cloudinary storage
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
-  },
+export const uploadProfilePic = multer({
+  storage: createCloudinaryStorage("ktApp-profilePic"),
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
+export const uploadAlbumPhoto = multer({
+  storage: createCloudinaryStorage("ktApp-albumPhotos"),
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
 
-export default upload;
+// Default export for backward compatibility
+export default uploadPetMainPic;
