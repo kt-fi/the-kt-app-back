@@ -38,6 +38,7 @@ const signupEmail = async (req, res, next) => {
       password: passwordHashed,
       telephone,
       pets: [],
+      //Add UserType field later
     });
 
     await user.save();

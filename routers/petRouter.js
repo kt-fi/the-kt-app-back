@@ -4,11 +4,17 @@ const router = express.Router();
 import { check } from "express-validator";
 import verifyToken from "../verifyJWT.js";
 import upload from "../utils/multerConfig.js";
-import { uploadPetMainPic } from "../utils/multerConfig.js";
+import { uploadPetMainPic, uploadSpottedPet } from "../utils/multerConfig.js";
 
 router.post(
-  "/uploadPhoto",
+  "/uploadPhotoUser",
   uploadPetMainPic.single("file"),
+  petController.uploadPhoto
+);
+
+router.post(
+  "/uploadPhotoSpotted",
+  uploadSpottedPet.single("file"),
   petController.uploadPhoto
 );
 

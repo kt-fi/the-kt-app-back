@@ -79,7 +79,7 @@ const sendMessage = async (req, res, next) => {
 
     // SOCKET FUNCTIONALITY
     if (recipientId && chat && newMessage) {
-      console.log("Emitting new_message to recipient:", recipientId);
+      console.log("Emitting new_message to recipient:", newMessage);
       io.to(recipientId).emit("new_message", {
         newMessage,
         petId,

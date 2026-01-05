@@ -30,6 +30,7 @@ const uploadPhoto = async (req, res, next) => {
 };
 
 
+
 const getAllUsers = async (req, res, next) => {
   let users;  
   try {

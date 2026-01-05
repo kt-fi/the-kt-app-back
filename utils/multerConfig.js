@@ -29,15 +29,11 @@ export const uploadPetMainPic = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-export const uploadProfilePic = multer({
-  storage: createCloudinaryStorage("ktApp-profilePic"),
+export const uploadSpottedPet = multer({
+  storage: createCloudinaryStorage("ktApp-spottedPet"),
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-export const uploadAlbumPhoto = multer({
-  storage: createCloudinaryStorage("ktApp-albumPhotos"),
-  limits: { fileSize: 10 * 1024 * 1024 },
-});
 
 // Default export for backward compatibility
 export default uploadPetMainPic;
