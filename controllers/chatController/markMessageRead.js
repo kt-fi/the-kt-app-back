@@ -1,7 +1,9 @@
 import Message from "../../schemas/messageSchema.js";
 
+import { io } from "../../app.js"; // <-- Add this import
+
 const markMessageRead = async (req, res, next) => {
-  const { messageId, userId } = req.body;
+  const { messageId, userId, senderId } = req.body;
 
 
   try {
@@ -18,6 +20,10 @@ const markMessageRead = async (req, res, next) => {
     console.error(err);
     return res.status(500).json({ msg: "Server error", error: err.message });
   }
+
+  io.to(senderId).emit("mark_message_seen", {
+          messageSeen: true
+        });
 };
 
 export default markMessageRead;

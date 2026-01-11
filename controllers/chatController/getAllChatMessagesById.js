@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import User from "../../schemas/userSchema.js";
 import HttpError from "../../httpError.js";
 
+import bcrypt from "bcryptjs";
+
 const getAllChatMessagesById = async (req, res, next) => {
   const { chatId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(chatId)) {
