@@ -15,21 +15,16 @@ const getAllChatMessagesById = async (req, res, next) => {
 
   let chat;
   try {
-    chat = await Chat.findById(chatId).populate({
-      path: "messages",
-      populate: {
-        path: "senderId",
-        model: User,
-        '-password': 0, // Exclude password field
-      },
-    })
     
+    messages = await Message.updateMany({ chatId: chatId }, { seen: true });
+    chat = await Chat.findById(chatId);
+
     if (!chat) {
       let err = new HttpError("Chat not found", 404);
       res.status(404).json({ msg: "Chat not found" });
       return next(err);
     }
-    res.status(200).json({ messages: chat.messages });
+    res.status(200).json({ chat, messages });
   } catch (error) {
     let err = new HttpError(
       "Fetching chat messages failed, please try again later.",

@@ -1,10 +1,24 @@
 import Chat from "../../schemas/chatSchema.js";
 import mongoose from "mongoose";
 import HttpError from "../../httpError.js";
+import Message from "../../schemas/messageSchema.js";
+
+
+import { io } from "../../app.js"; // <-- Add this import
 
 const getChatById = async (req, res, next) => {
   const { chatId } = req.params;
+  const userId = req.body.userId;
+
+  let messages;
+  let senderId;
   try {
+    
+    messages = await Message.updateMany(
+      { chatId: chatId, senderId: { $ne: userId }, seen: false } ,
+      { seen: true }
+    );
+    
     const chat = await Chat.findById(chatId).populate({
       path: 'messages',
       populate: [
@@ -21,12 +35,22 @@ const getChatById = async (req, res, next) => {
       return next(err);
     }
 
+senderId = chat.participants.find(participant => participant._id.toString() !== userId)._id.toString();    
+
+console.log(senderId)
+
+    io.to(senderId).emit("message_seen", {
+         chatSeen: chatId
+    });
+
     return res.status(200).json({ chat });
   } catch (err) {
     let error = new HttpError("Server error", 500);
     res.status(500).json({ msg: error.message });
     return next(error);
   }
+
+    
 };
 
 export default getChatById;
