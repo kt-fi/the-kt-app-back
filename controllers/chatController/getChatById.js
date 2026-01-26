@@ -54,6 +54,7 @@ console.log("chat:", chat);
   } catch (err) {
     let error = new HttpError(err.message, 500);
     res.status(500).json({ msg: error.message });
+    console.log("Error in getChatById:", err);
     return next(error);
   }
 
