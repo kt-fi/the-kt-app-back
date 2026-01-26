@@ -13,6 +13,8 @@ const getChatById = async (req, res, next) => {
   let messages;
   let senderId;
 
+  console.log("getChatById called with chatId:", chatId, "userId:", userId);
+
   try {
     // Update only messages where senderId is NOT the user and seen is false
     messages = await Message.updateMany(
@@ -42,7 +44,7 @@ const getChatById = async (req, res, next) => {
 
 senderId = chat.participants.find(participant => participant._id.toString() !== userId)._id.toString();    
 
-console.log(senderId)
+console.log("chat:", chat);
 
     io.to(senderId).emit("message_seen", {
          chatSeen: chatId
