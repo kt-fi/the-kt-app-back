@@ -7,16 +7,21 @@ import Message from "../../schemas/messageSchema.js";
 import { io } from "../../app.js"; // <-- Add this import
 
 const getChatById = async (req, res, next) => {
-  const { chatId } = req.params;
-  const userId = req.body.userId;
+  
+  const {chatId, userId} = req.params;
 
   let messages;
   let senderId;
+
   try {
-    
+    // Update only messages where senderId is NOT the user and seen is false
     messages = await Message.updateMany(
-      { chatId: chatId, senderId: { $ne: userId }, seen: false } ,
-      { seen: true }
+      {
+        chatId: chatId,
+        senderId: { $ne: userId }, // Only messages not sent by the user
+        seen: false
+      },
+      { $set: { seen: true } }
     );
     
     const chat = await Chat.findById(chatId).populate({
@@ -45,7 +50,7 @@ console.log(senderId)
 
     return res.status(200).json({ chat });
   } catch (err) {
-    let error = new HttpError("Server error", 500);
+    let error = new HttpError(err.message, 500);
     res.status(500).json({ msg: error.message });
     return next(error);
   }

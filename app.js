@@ -53,6 +53,8 @@ import petRouter from './routers/petRouter.js';
 import chatRouter from './routers/chatRouter.js';
 import locationRouter from './routers/locationRouter.js';
 
+import errorLogRouter from './routers/errorLogRouter.js';
+
 // app.use((req, res, next) => {
 //   console.log(`[${req.method}] ${req.originalUrl}`);
 //   next();
@@ -88,6 +90,8 @@ app.use("/app", appRouter );
 app.use('/pets', petRouter);
 app.use('/chat', chatRouter);
 app.use('/location', locationRouter);
+
+app.use('/errorLog', errorLogRouter);
 
 // app.use((err, req, res, next) => {
 //   console.error('MULTER/EXPRESS ERROR:', err);

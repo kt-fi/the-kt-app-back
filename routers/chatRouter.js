@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/createChat", chatController.createChat);
 router.post("/sendMessage", chatController.sendMessage);
 router.get("/getAllChatMessagesById/:chatId", chatController.getAllChatMessagesById);
-router.get("/getChatById/:chatId", chatController.getChatById);
+router.get("/getChatById/:chatId/:userId", chatController.getChatById);
 router.get("/getAllUserChats/:userId", chatController.getAllUserChats);
 
 router.post("/markMessageRead", chatController.markMessageRead);
