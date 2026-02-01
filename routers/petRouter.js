@@ -9,6 +9,7 @@ import { uploadPetMainPic, uploadSpottedPet } from "../utils/multerConfig.js";
 router.post(
   "/uploadPhotoUser",
   uploadPetMainPic.single("file"),
+  ()=>{console.log("called Upload")},
   petController.uploadPhoto
 );
 

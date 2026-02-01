@@ -5,13 +5,13 @@ import { io } from "../../app.js"; // <-- Add this import
 const markMessageRead = async (req, res, next) => {
 
   const  message  = req.body;
-  console.log( "on it", message)
+
   try {
     const updatedMessage = await Message.findByIdAndUpdate(message.messageId, { seen: true }, { new: true });
 
     await updatedMessage.save();
 
-    console.log("emitting diude", updatedMessage.senderId.toString())
+
 
     io.to(updatedMessage.senderId.toString()).emit("message_seen", {
          chatSeen: updatedMessage.chatId.toString()

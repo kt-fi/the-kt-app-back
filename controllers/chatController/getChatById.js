@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import HttpError from "../../httpError.js";
 import Message from "../../schemas/messageSchema.js";
 
-
 import { io } from "../../app.js"; // <-- Add this import
 
 const getChatById = async (req, res, next) => {
@@ -13,7 +12,7 @@ const getChatById = async (req, res, next) => {
   let messages;
   let senderId;
 
-  console.log("getChatById called with chatId:", chatId, "userId:", userId);
+ 
 
   try {
     // Update only messages where senderId is NOT the user and seen is false
@@ -44,7 +43,7 @@ const getChatById = async (req, res, next) => {
 
 senderId = chat.participants.find(participant => participant._id.toString() !== userId)._id.toString();    
 
-console.log("chat:", chat);
+
 
     io.to(senderId).emit("message_seen", {
          chatSeen: chatId
@@ -54,7 +53,7 @@ console.log("chat:", chat);
   } catch (err) {
     let error = new HttpError(err.message, 500);
     res.status(500).json({ msg: error.message });
-    console.log("Error in getChatById:", err);
+  
     return next(error);
   }
 

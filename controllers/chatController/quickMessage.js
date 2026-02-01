@@ -16,7 +16,7 @@ const quickMessage = async (req, res, next) => {
   let recipient;
   let locationCoords;
 
-  console.log("Received quick message request:", req.body);
+
 
   let newMessage;
 
@@ -78,7 +78,7 @@ const quickMessage = async (req, res, next) => {
       io.to(recipientId).emit('quick_message', {
       getChat
   });
-  console.log("Emitted quick_message event to recipient:", recipientId);
+
 }
 
 

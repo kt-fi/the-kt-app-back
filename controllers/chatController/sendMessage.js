@@ -26,7 +26,6 @@ const sendMessage = async (req, res, next) => {
   const sess = await mongoose.startSession();
   sess.startTransaction();
 
-  console.log(req.body);
 
 
     try {
@@ -79,8 +78,8 @@ const sendMessage = async (req, res, next) => {
 
     // SOCKET FUNCTIONALITY
     if (recipientId && chat && newMessage) {
-      console.log("Emitting new_message to recipient:", newMessage);
-      io.to(recipientId).emit("new_message", {
+  
+      io.to(recipientId._id).emit("new_message", {
         newMessage,
         petId,
         image: pet.photoIds.length > 0 && pet.photoIds ? pet.photoIds[0] : pet.petName.charAt(0).toUpperCase(),
