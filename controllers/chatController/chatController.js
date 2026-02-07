@@ -5,3 +5,4 @@ export {default as getAllUserChats} from "./getAllUserChats.js";
 export {default as createChat} from "./createChat.js";
 export {default as quickMessage} from "./quickMessage.js";
 export {default as markMessageRead} from "./markMessageRead.js";
+export {default as unreadCount} from "./unreadCount.js";

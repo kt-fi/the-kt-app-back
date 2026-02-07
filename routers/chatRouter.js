@@ -8,6 +8,7 @@ router.post("/sendMessage", chatController.sendMessage);
 router.get("/getAllChatMessagesById/:chatId", chatController.getAllChatMessagesById);
 router.get("/getChatById/:chatId/:userId", chatController.getChatById);
 router.get("/getAllUserChats/:userId", chatController.getAllUserChats);
+router.get("/unreadCount/:userId", chatController.unreadCount);
 
 router.post("/markMessageRead", chatController.markMessageRead);
 

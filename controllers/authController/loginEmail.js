@@ -32,6 +32,7 @@ const loginEmail = async (req, res, next) => {
     return res.json({ user, token });
   } catch (err) {
     const error = new HttpError("Unknown Server Error", 500);
+    
     return res.status(500).json({ msg: error.message });
   }
 };
