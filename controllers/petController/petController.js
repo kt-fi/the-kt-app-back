@@ -5,9 +5,12 @@ import Location from "../../schemas/locationSchema.js";
 import Message from "../../schemas/messageSchema.js";
 import Chat from "../../schemas/chatSchema.js";
 import mongoose from "mongoose";
+import e from "express";
 
 export { default as addNewPet } from './addNewPet.js';
 export { default as getPetsByUserId } from './getPetsByUserId.js';
+
+export { default as getSpottedLocationsList } from './getSpottedLocationsList.js';
 // 
 export { default as getAllLostPets } from './getAllLostPets.js';
 export { default as deletePetById } from './deletePetById.js';

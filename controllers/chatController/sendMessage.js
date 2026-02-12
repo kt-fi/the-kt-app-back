@@ -12,6 +12,7 @@ const sendMessage = async (req, res, next) => {
   const recipientId = req.body.recipient;
   const petId = req.body.petId;
 
+  
 
   // if (
   //   !senderId ||
@@ -46,6 +47,7 @@ const sendMessage = async (req, res, next) => {
     if (chatId && mongoose.Types.ObjectId.isValid(chatId)) {
       chat = await Chat.findOne({ _id: chatId }).session(sess);
     }
+    
 
     if (!chat) {
       chat = new Chat({
@@ -53,6 +55,12 @@ const sendMessage = async (req, res, next) => {
         participants: [sender._id, recipient._id],
         messages: [],
       });
+
+
+  
+        
+       
+
       await chat.save({ session: sess });
       recipient.chats.push(chat._id);
       sender.chats.push(chat._id);
@@ -69,6 +77,11 @@ const sendMessage = async (req, res, next) => {
     });
 
     await newMessage.save({ session: sess });
+
+    if(newMessage.location) {
+      pet.spottedLocations.push(newMessage.location);
+        await pet.save({ session: sess });
+    }
 
     chat.messages.push(newMessage._id);
     await chat.save({ session: sess });

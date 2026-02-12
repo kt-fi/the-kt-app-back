@@ -45,6 +45,8 @@ router.delete(
   petController.deletePetById
 );
 
+router.get("/getSpottedLocationsList/:petId", petController.getSpottedLocationsList);
+
 router.put(
   "/updatePetById/:petId",
   //  verifyToken,
