@@ -9,10 +9,10 @@ import mongoose from "mongoose";
 
 const sendMessage = async (req, res, next) => {
   const { chatId, senderId, message, location, image } = req.body.message;
-  const recipientId = req.body.recipient;
+  const recipientId = req.body.recipientId;
   const petId = req.body.petId;
 
-  
+  console.log(req.body)
 
   // if (
   //   !senderId ||
@@ -28,7 +28,7 @@ const sendMessage = async (req, res, next) => {
   sess.startTransaction();
 
 
-
+console.log(recipientId)
     try {
 
     let recipient = await User.findOne({ _id: recipientId }).session(sess);
@@ -55,11 +55,6 @@ const sendMessage = async (req, res, next) => {
         participants: [sender._id, recipient._id],
         messages: [],
       });
-
-
-  
-        
-       
 
       await chat.save({ session: sess });
       recipient.chats.push(chat._id);
@@ -92,7 +87,7 @@ const sendMessage = async (req, res, next) => {
     // SOCKET FUNCTIONALITY
     if (recipientId && chat && newMessage) {
   
-      io.to(recipientId._id).emit("new_message", {
+      io.to(recipientId).emit("new_message", {
         newMessage,
         petId,
         image: pet.photoIds.length > 0 && pet.photoIds ? pet.photoIds[0] : pet.petName.charAt(0).toUpperCase(),

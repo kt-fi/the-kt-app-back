@@ -7,7 +7,16 @@ const unreadCount = async (req, res, next) => {
         let totalUnreadCount = 0;
         for (const chat of chats) {
             const unreadMessages = chat.messages.filter(
-                (msg) => msg.senderId.toString() !== userId && !msg.seen
+                (msg) => {
+                    if(msg.senderId !== null){
+                        if (msg.senderId.toString() !== userId && !msg.seen) {
+                        return msg;
+                    }
+                    } 
+                    if (msg.senderId == null && !msg.seen) {
+                        return msg;
+                    }
+                }
             );
             totalUnreadCount += unreadMessages.length;
         }   

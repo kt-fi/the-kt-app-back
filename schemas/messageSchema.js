@@ -20,7 +20,8 @@ const messageSchema = new mongoose.Schema({
     default: Date.now,
   },
   location: {
-    type: [Number, Number], // [longitude, latitude]
+    type: [Number, Number],  // switch to use location schema
+    required: false, // [longitude, latitude]
   },
   image: {
     type: String, // URL or base64 string

@@ -41,7 +41,11 @@ const getChatById = async (req, res, next) => {
       return next(err);
     }
 
-senderId = chat.participants.find(participant => participant._id.toString() !== userId)._id.toString();    
+    if(chat.participants.length === 2){
+      senderId = chat.participants.find(participant => participant._id.toString() !== userId)._id.toString();   
+    } else {
+      senderId = null;
+    } 
 
 
 
@@ -52,6 +56,7 @@ senderId = chat.participants.find(participant => participant._id.toString() !== 
     return res.status(200).json({ chat });
   } catch (err) {
     let error = new HttpError(err.message, 500);
+
     res.status(500).json({ msg: error.message });
   
     return next(error);

@@ -11,6 +11,8 @@ router.get("/getChatById/:chatId/:userId", chatController.getChatById);
 router.get("/getAllUserChats/:userId", chatController.getAllUserChats);
 router.get("/unreadCount/:userId", chatController.unreadCount);
 
+router.get("/checkForExistingChat/:userId/:petId", chatController.checkForExistingChat);
+
 router.post("/markMessageRead", chatController.markMessageRead);
 
 router.post("/quickMessage", chatController.quickMessage);

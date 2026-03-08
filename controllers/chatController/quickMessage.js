@@ -6,19 +6,19 @@ import Message from "../../schemas/messageSchema.js";
 import Location from "../../schemas/locationSchema.js";
 
 import { io } from '../../app.js'; // <-- Add this import
-import { get } from "http";
+
 
 
 const quickMessage = async (req, res, next) => {
-  const { message, recipientId, petId, location, chatType } = req.body;
+  const { message, recipientId, petId, location, image, chatType } = req.body;
   let chat;
   let pet;
   let recipient;
   let locationCoords;
 
-
-
   let newMessage;
+
+  console.log(image);
 
   try {
     recipient = await User.findOne({ _id: recipientId });
@@ -36,14 +36,13 @@ const quickMessage = async (req, res, next) => {
     await sess.startTransaction();
     if (location !== undefined && location !== null && location.length === 2) {
       locationCoords = new Location({
-        status: "missing",
         location: {
           type: "Point",
           coordinates: location,
         },
       });
       await locationCoords.save({ session: sess });
-      pet.spottedLocations.push(locationCoords._id);
+      pet.spottedLocations.push(location);
       await pet.save({ session: sess });
     }
 
@@ -55,7 +54,8 @@ const quickMessage = async (req, res, next) => {
 
     newMessage = await new Message({
       chatId: chat._id,
-      location: location,
+      location: location != null ? [...location] : null,
+      image: image ? image : null,
       senderId: null,
       message: message,
       sentAt: new Date(),
@@ -92,3 +92,6 @@ const quickMessage = async (req, res, next) => {
 };
 
 export default quickMessage;
+
+
+// NEED TO FIX LOCATION SCEMA USAGE IN PET SCHEMA AND MESSAGE SCHEMA TO BE ABLE TO PUSH LOCATION OBJECTS INSTEAD OF COORDINATES. ALSO NEED TO FIX UNREAD COUNT TO ACCOUNT FOR QUICK MESSAGES WITH NULL SENDER ID.
