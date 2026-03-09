@@ -4,6 +4,7 @@ import DeviceToken from '../../schemas/deviceTokenSchema.js';
 const setDeviceToken = async (req, res, next) => {
       try {
             const { deviceToken, userId, platform } = req.body;
+            console.log('Received setDeviceToken request:', { userId, deviceToken, platform });
             if (!userId || !deviceToken || !platform) {
                   return res.status(400).json({ message: 'userId, deviceToken, and platform are required.' });
             }
