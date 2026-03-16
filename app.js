@@ -5,6 +5,11 @@ import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 
+import { sendToToken } from './send-notification.js';
+
+
+import path from 'path';
+
 dotenv.config();
 
 const app = express();
@@ -80,6 +85,23 @@ if (userId) {
   });
 });
 
+// ------------------------------------------------------------------------------------//
+
+// const serviceAccountPath = process.env.SERVICE_ACCOUNT_PATH || './server/service-account.json';
+
+// import { readFileSync } from 'fs';
+// let sa;
+// try {
+//   const saPath = path.resolve(serviceAccountPath);
+//   sa = JSON.parse(readFileSync(saPath, 'utf-8'));
+//   console.log('Loaded service account. client_email:', sa.client_email || '(none)');
+//   console.log('Has private_key:', !!sa.private_key);
+// } catch (err) {
+//   console.error('Failed to load service account at', serviceAccountPath, '\n', err.message);
+//   process.exit(1);
+// }
+
+// ------------------------------------------------------------------------------------//
 
 
 
@@ -88,6 +110,21 @@ app.use(cors());
 app.use(express.json({limit: '100mb', extended: true}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.text({limit: '100mb', extended: true}));
+
+// app.post('/send', async (req, res) => {
+
+//   const { token , title, body, data } = req.body;
+//   try {
+//     const { token, title , body , data  } = req.body;
+//     if (!token) return res.status(400).json({ error: 'token required' });
+//     const messageId = await sendToToken(token, title, body, data);
+//     return res.json({ success: true, messageId });
+//   } catch (err) {
+//     console.error('Send error', err);
+//     return res.status(500).json({ success: false, error: err.message || err });
+//   }
+// });
+
 app.use("/app", appRouter );
 app.use('/pets', petRouter);
 app.use('/chat', chatRouter);

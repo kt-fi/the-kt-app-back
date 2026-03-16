@@ -4,8 +4,13 @@ import Pet from "../../schemas/petSchema.js";
 import HttpError from "../../httpError.js";
 import Chat from "../../schemas/chatSchema.js";
 
+import DeviceToken from "../../schemas/deviceTokenSchema.js";
+
 import { io } from "../../app.js"; // <-- Add this import
 import mongoose from "mongoose";
+
+
+import { sendToToken } from '../../send-notification.js';
 
 const sendMessage = async (req, res, next) => {
   const { chatId, senderId, message, location, image } = req.body.message;
@@ -28,18 +33,22 @@ const sendMessage = async (req, res, next) => {
   sess.startTransaction();
 
 
-console.log(recipientId)
+
     try {
 
     let recipient = await User.findOne({ _id: recipientId }).session(sess);
     let sender = await User.findOne({ _id: senderId }).session(sess);
     let pet = await Pet.findOne({ _id: petId }).session(sess);
 
+    let userToken = await DeviceToken.findOne({ userId: recipientId }).session(sess);
+
     if (!sender) {
       console.error("Recipient or sender not found");
       await sess.abortTransaction();
       sess.endSession();
       return res.status(404).json({ msg: "Recipient or sender not found" });
+    } else {
+      console.log(sender.userName)
     }
 
 
@@ -47,6 +56,16 @@ console.log(recipientId)
     if (chatId && mongoose.Types.ObjectId.isValid(chatId)) {
       chat = await Chat.findOne({ _id: chatId }).session(sess);
     }
+
+    if(userToken){
+      let token = userToken.token;
+      let title = `Message about ${pet.petName}`;
+    let body = message || "You have a new message";
+    let data = 3
+    const messageId = await sendToToken(token, title, body, data);
+    }
+    
+    
     
 
     if (!chat) {

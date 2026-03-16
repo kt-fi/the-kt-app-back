@@ -12,7 +12,7 @@ const deviceTokenSchema = new mongoose.Schema({
     },
     platform: {
         type: String,
-        enum: ['ios', 'android'],
+        enum: ['ios', 'android', 'web'],
         required: true
     }
 });
