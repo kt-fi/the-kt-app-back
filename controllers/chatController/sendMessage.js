@@ -57,12 +57,16 @@ const sendMessage = async (req, res, next) => {
       chat = await Chat.findOne({ _id: chatId }).session(sess);
     }
 
-    if(userToken){
-      let token = userToken.token;
-      let title = `Message about ${pet.petName}`;
-    let body = message || "You have a new message";
-    let data = 3
-    const messageId = await sendToToken(token, title, body, data);
+    if (userToken?.token) {
+      try {
+        let token = userToken.token;
+        let title = `Message about ${pet.petName}`;
+        let body = message || "You have a new message";
+        let data = 3;
+        await sendToToken(token, title, body, data);
+      } catch (notificationError) {
+        console.error("Failed to send push notification:", notificationError);
+      }
     }
     
     

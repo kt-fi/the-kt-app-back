@@ -13,7 +13,8 @@ const userSchema = new Schema({
     address: { type: String, require: false },
     location: { type: String, require: false },
     pets: [{ type: mongoose.Types.ObjectId, require: false, ref: 'Pet'}],
-    chats: [{ type: mongoose.Types.ObjectId, require: true, ref: 'Chat'}]
+    chats: [{ type: mongoose.Types.ObjectId, require: true, ref: 'Chat'}],
+    accountType: { type: String, enum: ['free', 'premium', 'temp'], require: true }
 })
 
 export default mongoose.model('User', userSchema);
