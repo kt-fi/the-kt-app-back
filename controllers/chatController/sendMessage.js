@@ -13,7 +13,7 @@ import { io } from "../../app.js"; // <-- Add this import
 import mongoose from "mongoose";
 
 
-import { sendToToken } from '../../send-notification.js';
+
 
 const sendMessage = async (req, res, next) => {
   const { chatId, senderId, message, location, image } = req.body.message;
