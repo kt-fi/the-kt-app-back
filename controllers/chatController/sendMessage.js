@@ -63,6 +63,7 @@ const sendMessage = async (req, res, next) => {
         let title = `Message about ${pet.petName}`;
         let body = message || "You have a new message";
         let data = 3;
+        console.log("Sending push notification to token:", token);
         await sendToToken(token, title, body, data);
       } catch (notificationError) {
         console.error("Failed to send push notification:", notificationError);
