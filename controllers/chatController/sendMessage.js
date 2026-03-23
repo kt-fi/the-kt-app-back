@@ -4,6 +4,9 @@ import Pet from "../../schemas/petSchema.js";
 import HttpError from "../../httpError.js";
 import Chat from "../../schemas/chatSchema.js";
 
+import { sendToToken } from '../../utils/sendToToken.js'; // adjust path as needed
+
+
 import DeviceToken from "../../schemas/deviceTokenSchema.js";
 
 import { io } from "../../app.js"; // <-- Add this import
@@ -58,18 +61,29 @@ const sendMessage = async (req, res, next) => {
     }
 
     if (userToken?.token) {
-      try {
-        let token = userToken.token;
-        let title = `Message about ${pet.petName}`;
-        let body = message || "You have a new message";
-        let data = 3;
-        console.log("Sending push notification to token:", token);
-        await sendToToken(token, title, body, data);
-      } catch (notificationError) {
-        console.error("Failed to send push notification:", notificationError);
-      }
-    }
-    
+  try {
+    const token = userToken.token;
+    const title = `Message about ${pet.petName}`;
+    const body = message || 'You have a new message';
+
+    // Build data for notification (string values)
+    const chatId = String(chat?._id || '');
+    const chatUrl = `https://your-site.example/chats/${chatId}`;
+
+    const data = {
+      chatId,
+      chatUrl,
+      type: 'chat_message',
+      senderId: String(senderId || '')
+    };
+
+    console.log('Sending push notification to token (masked):', `${token.slice(0,8)}...${token.slice(-6)}`);
+    // Pass 'web' as platform so sendToToken uses webpush.notification
+    await sendToToken(token, title, body, data, 'web');
+  } catch (notificationError) {
+    console.error('Failed to send push notification:', notificationError);
+  }
+}
     
     
 
