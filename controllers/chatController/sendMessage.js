@@ -68,7 +68,7 @@ const sendMessage = async (req, res, next) => {
 
     // Build data for notification (string values)
     const chatId = String(chat?._id || '');
-    const chatUrl = `https://katie-android/pet/contact/${petId}`;
+    const chatUrl = `https://katie-android.web.app/pet/contact/${petId}`;
 
     const data = {
       chatId,
