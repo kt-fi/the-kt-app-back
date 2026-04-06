@@ -3,7 +3,6 @@ import * as petController from "../controllers/petController/petController.js";
 const router = express.Router();
 import { check } from "express-validator";
 import verifyToken from "../verifyJWT.js";
-import upload from "../utils/multerConfig.js";
 import { uploadPetMainPic, uploadSpottedPet } from "../utils/multerConfig.js";
 
 router.post(
@@ -55,6 +54,9 @@ router.put(
   check("age").isNumeric().notEmpty(),
   check("description").notEmpty().isLength({ min: 10 })
 );
+
+router.put("/addPetPhotoToPet/", petController.addPetPhotoToPet);
+router.put("/changeProfilePhotoOrder/", petController.changeProfilePhotoOrder);
 
 // TEST **************************************************************************
 router.get("/getAllUsers", petController.getAllUsers);
