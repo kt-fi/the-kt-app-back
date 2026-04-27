@@ -18,7 +18,7 @@ const getAllUserChats = async (req, res, next) => {
         },
         {
           path: "petId",
-          model: "Pet",
+          model: "Pet", // Place an If For when pet has been removed or set a ****!!Conversation Rermoved Situatiobn!!****
         },
         { path: "participants", model: "User", select: "-password" }, // Exclude password field
       ],

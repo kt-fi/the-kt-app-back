@@ -17,6 +17,7 @@ export { default as updatePetById } from './updatePetById.js';
 export { default as getPetById } from './getPetById.js';
 export { default as addPetPhotoToPet } from './addPetPhotoToPet.js';
 export { default as changeProfilePhotoOrder } from './changeProfilePhotoOrder.js';
+export { default as removePetPhoto } from './removePetPhoto.js';
 
 // TEST METHOD -----------------------------------------------------------------------
 

@@ -80,7 +80,7 @@ const addNewPet = async (req, res, next) => {
       photoIds: [photoId],
       status,
       dateLastSeen,
-      locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc._id : null,
+      locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc : null,
     });
 
     await newPet.save({ session: sess });

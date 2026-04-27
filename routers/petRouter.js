@@ -8,7 +8,6 @@ import { uploadPetMainPic, uploadSpottedPet } from "../utils/multerConfig.js";
 router.post(
   "/uploadPhotoUser",
   uploadPetMainPic.single("file"),
-  ()=>{console.log("called Upload")},
   petController.uploadPhoto
 );
 
@@ -40,7 +39,7 @@ router.get(
 
 router.delete(
   "/deletePetById/:petId",
-  verifyToken,
+  // verifyToken,
   petController.deletePetById
 );
 
@@ -57,6 +56,8 @@ router.put(
 
 router.put("/addPetPhotoToPet/", petController.addPetPhotoToPet);
 router.put("/changeProfilePhotoOrder/", petController.changeProfilePhotoOrder);
+
+router.delete("/removePetPhoto/", petController.removePetPhoto);
 
 // TEST **************************************************************************
 router.get("/getAllUsers", petController.getAllUsers);

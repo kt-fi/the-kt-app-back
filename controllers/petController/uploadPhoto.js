@@ -7,9 +7,13 @@ const uploadPhoto = async (req, res, next) => {
     return res.status(400).json({ msg: error.message });
   }
 
+  const urlParts = req.file.path.split('/upload/');
+  const publicId = urlParts[1].replace(/^v\d+\//, '').replace(/\.[^/.]+$/, '');
+  console.log('Cloudinary public_id:', publicId);
   res.json({
     msg: "File uploaded successfully",
-    fileUrl: req.file.path, // Cloudinary URL
+    fileUrl: req.file.path,
+    publicId,
   });
 };
 
