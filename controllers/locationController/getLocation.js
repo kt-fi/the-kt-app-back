@@ -1,4 +1,5 @@
 import  HttpError  from '../../httpError.js';
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const getLocation = async (req, res, next) => {
   try {
@@ -27,7 +28,16 @@ const getLocation = async (req, res, next) => {
     res.json(data);
 
   } catch (err) {
-    const error = new HttpError('Error fetching location', 500);
+   const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Get Location Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
+        console.log("Error logged in database:", err);
     return res.status(500).json({ error: error.message });
   }
 };

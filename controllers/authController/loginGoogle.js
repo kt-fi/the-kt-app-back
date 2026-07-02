@@ -2,6 +2,7 @@ import User from "../../schemas/userSchema.js";
 import HttpError from "../../httpError.js";
 import jwt from "jsonwebtoken";
 import { v4 as uuid } from "uuid";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const loginGoogle = async (req, res, next) => {
   const newUser = req.body;

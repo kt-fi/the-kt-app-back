@@ -4,6 +4,7 @@ import HttpError from "../../httpError.js";
 import Location from "../../schemas/locationSchema.js";
 import Message from "../../schemas/messageSchema.js";
 import Chat from "../../schemas/chatSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 ;
 
 export { default as addNewPet } from './addNewPet.js';
@@ -55,9 +56,19 @@ const deleteAllPets = async (req, res, next) => {
     await Location.deleteMany({});
     await Message.deleteMany({});
     await Chat.deleteMany({});
+    await DeviceToken.deleteMany({});
 
     res.json({ msg: "Deleted Database successfully" });
   } catch (err) {
+    const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Delete All Pets Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     const error = new HttpError("Error deleting pets", 500);
     return res.status(500).json({ msg: error.message });
   }

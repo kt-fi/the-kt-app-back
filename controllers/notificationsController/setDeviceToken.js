@@ -1,4 +1,5 @@
 import DeviceToken from '../../schemas/deviceTokenSchema.js';
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 
 const setDeviceToken = async (req, res, next) => {
@@ -23,7 +24,15 @@ const setDeviceToken = async (req, res, next) => {
                   return res.status(200).json({ message: 'Device token updated.', token: tokenDoc });
             }
       } catch (error) {
-            console.error('Error in setDeviceToken:', error);
+            const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Set Device Token Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
             res.status(500).json({ message: 'Internal server error.' });
       }
 };

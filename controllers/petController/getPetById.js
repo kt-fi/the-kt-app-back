@@ -1,5 +1,6 @@
 import HttpError from "../../httpError.js";
 import Pet from "../../schemas/petSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const getPetById = async (req, res) => {
     const petId = req.params.petId;
@@ -16,6 +17,15 @@ const getPetById = async (req, res) => {
         }
 
     }catch(err) {
+        const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Get Pet By ID Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
          const error = new HttpError("Could Not retrieve Pet ", 500);
         return res.status(500).json({ msg: error.message });
     }

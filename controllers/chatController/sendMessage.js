@@ -3,6 +3,7 @@ import User from "../../schemas/userSchema.js";
 import Pet from "../../schemas/petSchema.js";
 import HttpError from "../../httpError.js";
 import Chat from "../../schemas/chatSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 import { sendToToken } from "../../utils/sendToToken.js"; // adjust path as needed
 
@@ -135,7 +136,15 @@ const sendMessage = async (req, res, next) => {
 
     res.status(201).json(newMessage);
   } catch (error) {
-    console.error("Error in sendMessage:", error);
+     const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Send Message Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     await sess.abortTransaction();
     sess.endSession();
     next(error);

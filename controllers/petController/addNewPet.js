@@ -3,6 +3,7 @@ import Pet from "../../schemas/petSchema.js";
 import User from "../../schemas/userSchema.js";
 import Location from "../../schemas/locationSchema.js";
 import HttpError from "../../httpError.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const addNewPet = async (req, res, next) => {
   // Uncomment and use if you want validation
@@ -17,6 +18,7 @@ const addNewPet = async (req, res, next) => {
     userId,
     petName,
     age,
+    animalType,
     description,
     otherInfo,
     photoId,
@@ -75,6 +77,7 @@ const addNewPet = async (req, res, next) => {
       userId: user._id,
       petName,
       age,
+      animalType,
       description,
       otherInfo,
       photoIds: [photoId],
@@ -101,6 +104,15 @@ const addNewPet = async (req, res, next) => {
     const error = err instanceof HttpError
       ? err
       : new HttpError(err.message || "Unexpected Error", 500);
+      const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Add New Pet Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     return res.status(error.statusCode).json({ msg: error.message });
   }
 };

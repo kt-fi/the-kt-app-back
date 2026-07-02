@@ -21,6 +21,8 @@ router.get('/auth/checkLoginWithJWT', authController.checkLoginWithJWT)
 
 router.get('/api/location/:lat/:lon', authController.getLocation);
 
+router.delete('/auth/deleteUser/:userId', authController.deleteUser);
+
 
 
 

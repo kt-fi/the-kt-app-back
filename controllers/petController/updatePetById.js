@@ -2,6 +2,7 @@ import Pet from "../../schemas/petSchema.js";
 import HttpError from "../../httpError.js";
 import Location from "../../schemas/locationSchema.js";
 import e from "express";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const updatePetById = async (req, res, next) => {
   const petIdParam = req.params.petId;
@@ -12,6 +13,7 @@ const updatePetById = async (req, res, next) => {
     petId,
     petName,
     age,
+    animalType,
     description,
     otherInfo,
     image,
@@ -74,6 +76,7 @@ const updatePetById = async (req, res, next) => {
 
     // Update pet
     pet.age = age;
+    pet.animalType = animalType;
     pet.description = description;
     pet.otherInfo = otherInfo;
     pet.status = status;
@@ -83,6 +86,15 @@ const updatePetById = async (req, res, next) => {
 
     return res.json(pet);
   } catch (err) {
+    const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "  Update Pet By ID Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     const error = new HttpError("Error Updating Pet", 500);
 
     return res.status(500).json({ msg: error.message });

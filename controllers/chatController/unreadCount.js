@@ -1,4 +1,5 @@
 import Chat from "../../schemas/chatSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const unreadCount = async (req, res, next) => {
   const userId = req.params.userId; 
@@ -23,7 +24,15 @@ const unreadCount = async (req, res, next) => {
         console.log(`Total unread messages for user ${userId}: ${totalUnreadCount}`);
         return res.status(200).json({ unreadCount: totalUnreadCount });
     } catch (err) {
-        console.error(err);
+         const errorLog = new ErrorLogMessage({
+              message: err.message,
+              component: "Unread Count Controller Backend",
+              level: "error",
+              timestamp: new Date(),
+              notes: null,
+              currentSatus: "new",
+            });
+            await errorLog.save();
         return res.status(500).json({ msg: "Server error", error: err.message });
     }
 };

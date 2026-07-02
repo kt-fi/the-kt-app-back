@@ -1,5 +1,6 @@
 import cloudinaryV2 from "../../utils/cloudinary.js";
 import Pet from "../../schemas/petSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const removePetPhoto = async (req, res) => {
   const { petId, userId, photoId } = req.body;

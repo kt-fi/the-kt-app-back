@@ -7,6 +7,7 @@ let petSchema = new Schema({
     userId: { type: mongoose.Types.ObjectId, require: true, ref: 'User' },
     petName: { type: String, require: true },
     age: { type: Number, require: true},
+    animalType: { type: String, require: true },
     description: { type: String, require: true },
     otherInfo: { type: String, require: false },
     photoIds: [{ type: String, require: false }], //Change to array if multiple images

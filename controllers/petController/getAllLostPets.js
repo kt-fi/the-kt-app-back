@@ -1,6 +1,7 @@
 import Pet from "../../schemas/petSchema.js";
 import HttpError from "../../httpError.js";
 import Location from "../../schemas/locationSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const getAllLostPets = async (req, res, next) => {
   const centerLon = Number(req.params.lon);
@@ -37,6 +38,15 @@ const getAllLostPets = async (req, res, next) => {
 }
   } catch (err) {
     const error = new HttpError("Could Not retrieve List", 500);
+    const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Get All Lost Pets Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     return res.status(500).json({ msg: error.message });
   }
 };

@@ -1,6 +1,7 @@
 import Chat from "../../schemas/chatSchema.js";
 import User from "../../schemas/userSchema.js";
 import HttpError from "../../httpError.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const getAllUserChats = async (req, res, next) => {
   const { userId } = req.params;
@@ -31,6 +32,15 @@ const getAllUserChats = async (req, res, next) => {
  
     return res.status(200).json(user.chats);
   } catch (err) {
+     const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "GetAllUserChats Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     let error = new HttpError("Server error", 500);
     res.status(500).json({ msg: error.message });
     return next(error);

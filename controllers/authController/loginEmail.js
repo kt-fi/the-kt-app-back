@@ -2,6 +2,8 @@ import User from "../../schemas/userSchema.js";
 import HttpError from "../../httpError.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
+import * as errorLogController from "../ErrorLogController/createNewErrorLogMessage.js";
 
 const loginEmail = async (req, res, next) => {
   const { email, password } = req.body;
@@ -32,7 +34,15 @@ const loginEmail = async (req, res, next) => {
     return res.json({ user, token });
   } catch (err) {
     const error = new HttpError("Unknown Server Error", 500);
-    
+     const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Login Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     return res.status(500).json({ msg: error.message });
   }
 };

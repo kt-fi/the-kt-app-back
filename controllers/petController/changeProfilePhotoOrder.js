@@ -1,4 +1,5 @@
 import Pet from "../../schemas/petSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const changeProfilePhotoOrder = async (req, res) => {
     const { petId, userId, photoId } = req.body;
@@ -21,6 +22,15 @@ const changeProfilePhotoOrder = async (req, res) => {
         console.log(`Changed profile photo order for pet ${petId}, moved photo ${photoId} to the front`);
         res.status(200).json({ pet });
     } catch (err) {
+        const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Change Profile Photo Order Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
         res.status(500).json({ msg: "Error changing profile photo order", error: err.message });
     }
 

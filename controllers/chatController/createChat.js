@@ -5,6 +5,7 @@ import Chat from "../../schemas/chatSchema.js";
 import User from "../../schemas/userSchema.js";
 import Pet from "../../schemas/petSchema.js";
 import TempUser from "../../schemas/tempUserSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const createChat = async (req, res, next) => {
   // if user a temp and not signed up create temp User
@@ -78,7 +79,16 @@ const createChat = async (req, res, next) => {
       return next(new HttpError("Pet not found", 404));
     }
     res.json({ chat});
-  } catch (error) {
+  } catch (err) {
+     const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Create Chat Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     return next(new HttpError("Creating chat failed, please try again", 500));
   }
 };

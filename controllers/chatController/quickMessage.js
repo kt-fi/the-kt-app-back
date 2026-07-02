@@ -4,10 +4,9 @@ import User from "../../schemas/userSchema.js";
 import Pet from "../../schemas/petSchema.js";
 import Message from "../../schemas/messageSchema.js";
 import Location from "../../schemas/locationSchema.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
-import { io } from '../../app.js'; // <-- Add this import
-
-
+import { io } from "../../app.js"; // <-- Add this import
 
 const quickMessage = async (req, res, next) => {
   const { message, recipientId, petId, location, image, chatType } = req.body;
@@ -73,18 +72,23 @@ const quickMessage = async (req, res, next) => {
       .populate("participants", "-password")
       .populate("messages");
 
-    
     if (recipientId && getChat) {
-      io.to(recipientId).emit('quick_message', {
-      getChat
-  });
-
-}
-
+      io.to(recipientId).emit("quick_message", {
+        getChat,
+      });
+    }
 
     res.json({ message: "Quick message sent", chat, newMessage });
   } catch (err) {
-    console.error(err);
+     const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Quick Message Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     return res
       .status(500)
       .json({ message: "Server error", error: err.message });
@@ -92,6 +96,5 @@ const quickMessage = async (req, res, next) => {
 };
 
 export default quickMessage;
-
 
 // NEED TO FIX LOCATION SCEMA USAGE IN PET SCHEMA AND MESSAGE SCHEMA TO BE ABLE TO PUSH LOCATION OBJECTS INSTEAD OF COORDINATES. ALSO NEED TO FIX UNREAD COUNT TO ACCOUNT FOR QUICK MESSAGES WITH NULL SENDER ID.

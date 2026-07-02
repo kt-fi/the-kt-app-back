@@ -1,5 +1,6 @@
 import User from "../../schemas/userSchema.js";
 import HttpError from "../../httpError.js";
+import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 
 const getPetsByUserId = async (req, res, next) => {
   const userId = req.params.userId;
@@ -15,6 +16,15 @@ const getPetsByUserId = async (req, res, next) => {
     }
     res.json(user.pets);
   } catch (err) {
+    const errorLog = new ErrorLogMessage({
+          message: err.message,
+          component: "Get Pets By User ID Controller Backend",
+          level: "error",
+          timestamp: new Date(),
+          notes: null,
+          currentSatus: "new",
+        });
+        await errorLog.save();
     const error = new HttpError("Unable to find user", 500);
     return res.status(500).json({ msg: error.message });
   }
