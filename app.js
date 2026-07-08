@@ -125,7 +125,9 @@ app.use(express.text({limit: '100mb', extended: true}));
 //   }
 // });
 
+// Keep legacy `/app/*` routes and also expose root auth routes like `/auth/*`.
 app.use("/app", appRouter );
+app.use("/", appRouter);
 app.use('/pets', petRouter);
 app.use('/chat', chatRouter);
 app.use('/location', locationRouter);

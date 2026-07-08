@@ -30,6 +30,7 @@
     "nodemon": "^3.0.1",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
+    "resend": "^6.17.1",
     "socket.io": "^4.7.2",
     "uuid": "^11.1.0",
     "uuidv4": "^6.2.13"
