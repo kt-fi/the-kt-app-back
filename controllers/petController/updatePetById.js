@@ -22,17 +22,9 @@ const updatePetById = async (req, res, next) => {
     locationLastSeen,
   } = req.body;
 
-
-
   let locationLastSeenDoc;
   let coords = null;
-
   let pet;
-
-<<<<<<< HEAD
-=======
-  console.log(req.body);  
->>>>>>> d9285d0 (minor changes)
 
   if (
     locationLastSeen !== undefined &&
@@ -57,38 +49,31 @@ const updatePetById = async (req, res, next) => {
       return res.status(404).json({ msg: error.message });
     }
 
-  
-    await Location.findOneAndDelete({ _id: pet.locationLastSeen });
-    
+    if (status === "safe") {
+      locationRemoved = await Location.findOneAndDelete({ _id: pet.locationLastSeen });
+    }
 
-    if (coords == null) {
+    if (coords == null && pet.locationLastSeen) {
       locationLastSeenDoc = await Location.findOne({
         _id: pet.locationLastSeen,
       });
     }
 
-    // Update location
-    
-    if (
-      !locationLastSeenDoc &&
-      coords !== null &&
-      status === "missing"
-    ) {
-      locationLastSeenDoc = await new Location({
+    if (!locationLastSeenDoc && coords !== null && status === "missing") {
+      locationLastSeenDoc = new Location({
         status: status,
         location: { type: "Point", coordinates: [coords[1], coords[0]] },
       });
       await locationLastSeenDoc.save();
     }
 
-    // Update pet
     pet.age = age;
     pet.animalType = animalType;
     pet.description = description;
     pet.otherInfo = otherInfo;
     pet.status = status;
+    pet.dateLastSeen = dateLastSeen;
     pet.locationLastSeen = locationLastSeenDoc ? locationLastSeenDoc._id : null;
-    
     await pet.save();
 
     await pet.populate("locationLastSeen");
@@ -96,14 +81,16 @@ const updatePetById = async (req, res, next) => {
     return res.json(pet);
   } catch (err) {
     const errorLog = new ErrorLogMessage({
-          message: err.message,
-          component: "  Update Pet By ID Controller Backend",
-          level: "error",
-          timestamp: new Date(),
-          notes: null,
-          currentSatus: "new",
-        });
-        await errorLog.save();
+      message: err.message,
+      component: "Update Pet By ID Controller Backend",
+      level: "error",
+      timestamp: new Date(),
+      notes: null,
+      currentSatus: "new",
+    });
+
+    await errorLog.save();
+
     const error = new HttpError("Error Updating Pet", 500);
 
     return res.status(500).json({ msg: error.message });
