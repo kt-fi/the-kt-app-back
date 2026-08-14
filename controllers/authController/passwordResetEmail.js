@@ -8,26 +8,26 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const passwordResetEmail = async (req, res, next) => {
 
   let token = uuid();
-  let userId = req.body.userId; // Assuming the user ID is sent in the request body
+  let email = req.body.email; // Assuming the user ID is sent in the request body
   let user;
   let tokenExists;
 
-  console.log(token);
 
   try {
-
     
-    user = await User.findOne({ _id: userId });
+    console.log("Received email for password reset:", email);
+    user = await User.findOne({ email });
+    console.log(user)
 
-    tokenExists = await ResetPasswordToken.findOne({ userId: userId });
+    tokenExists = await ResetPasswordToken.findOne({ userId: user._id });
 
     if (tokenExists) {
-      await ResetPasswordToken.deleteOne({ userId: userId });
+      await ResetPasswordToken.deleteOne({ userId: user._id });
       // res.json({ message: "Existing token deleted. A new token will be created." });
     }
 
     let resetPasswordToken = await new ResetPasswordToken({
-      userId: userId,
+      userId: user._id,
       token: token,
     });
     await resetPasswordToken.save();
@@ -38,7 +38,7 @@ const passwordResetEmail = async (req, res, next) => {
       to: user.email,
       replyTo: "onboarding@resend.dev",
       subject: "Reset Password",
-      html: `<strong>Reset your password, click this link</strong> <br> <a href=${process.env.WEB_APP_URL}/reset-password/token'>Reset Password</a>`,
+      html: `<strong>Reset your password, click this link</strong> <br> <a href='${process.env.WEB_APP_URL}/reset-password/${token}'>Reset Password</a>`,
     });
 
     console.log(data);

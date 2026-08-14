@@ -7,4 +7,4 @@ export { default as checkLoginWithJWT } from './checkLoginWithJwt.js';
 export { default as deleteUser } from './deleteUser.js';
 export { default as getLocation } from '../locationController/getLocation.js';
 export { default as passwordResetEmail } from './passwordResetEmail.js';
-
+export { default as passwordResetForm } from './passwordResetForm.js';

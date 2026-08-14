@@ -25,6 +25,8 @@ router.delete('/auth/deleteUser/:userId', authController.deleteUser);
 
 router.post('/auth/passwordResetEmail', authController.passwordResetEmail);
 
+router.post('/auth/passwordResetForm', authController.passwordResetForm);
+
 
 
 

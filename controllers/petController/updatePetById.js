@@ -22,10 +22,17 @@ const updatePetById = async (req, res, next) => {
     locationLastSeen,
   } = req.body;
 
+
+
   let locationLastSeenDoc;
   let coords = null;
 
   let pet;
+
+<<<<<<< HEAD
+=======
+  console.log(req.body);  
+>>>>>>> d9285d0 (minor changes)
 
   if (
     locationLastSeen !== undefined &&
@@ -42,7 +49,7 @@ const updatePetById = async (req, res, next) => {
   }
 
   try {
-    pet = await Pet.findOne({ _id: petIdParam });
+    pet = await Pet.findOne({ _id: petIdParam }).populate("locationLastSeen");
 
     if (!pet) {
       const error = new HttpError("Pet Not Found", 404);
@@ -50,9 +57,9 @@ const updatePetById = async (req, res, next) => {
       return res.status(404).json({ msg: error.message });
     }
 
-    if(status === "safe") {
-      locationRemoved = await Location.findOneAndDelete({ _id: pet.locationLastSeen });
-    }
+  
+    await Location.findOneAndDelete({ _id: pet.locationLastSeen });
+    
 
     if (coords == null) {
       locationLastSeenDoc = await Location.findOne({
@@ -67,7 +74,7 @@ const updatePetById = async (req, res, next) => {
       coords !== null &&
       status === "missing"
     ) {
-      locationLastSeenDoc = new Location({
+      locationLastSeenDoc = await new Location({
         status: status,
         location: { type: "Point", coordinates: [coords[1], coords[0]] },
       });
@@ -80,9 +87,11 @@ const updatePetById = async (req, res, next) => {
     pet.description = description;
     pet.otherInfo = otherInfo;
     pet.status = status;
-    pet.dateLastSeen = dateLastSeen;
     pet.locationLastSeen = locationLastSeenDoc ? locationLastSeenDoc._id : null;
+    
     await pet.save();
+
+    await pet.populate("locationLastSeen");
 
     return res.json(pet);
   } catch (err) {
