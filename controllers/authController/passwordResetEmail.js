@@ -6,24 +6,23 @@ import User from "../../schemas/userSchema.js";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const passwordResetEmail = async (req, res, next) => {
-
   let token = uuid();
   let email = req.body.email; // Assuming the user ID is sent in the request body
   let user;
   let tokenExists;
 
-
   try {
-    
-    console.log("Received email for password reset:", email);
     user = await User.findOne({ email });
-    console.log(user)
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     tokenExists = await ResetPasswordToken.findOne({ userId: user._id });
 
     if (tokenExists) {
       await ResetPasswordToken.deleteOne({ userId: user._id });
-      // res.json({ message: "Existing token deleted. A new token will be created." });
     }
 
     let resetPasswordToken = await new ResetPasswordToken({
@@ -31,7 +30,6 @@ const passwordResetEmail = async (req, res, next) => {
       token: token,
     });
     await resetPasswordToken.save();
-
 
     const { data } = await resend.emails.send({
       from: "onboarding@resend.dev",

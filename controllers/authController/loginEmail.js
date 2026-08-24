@@ -31,7 +31,12 @@ const loginEmail = async (req, res, next) => {
       const error = new HttpError("Error Creating JWT", 500);
       return res.status(500).json({ msg: error.message }); 
     }
-    return res.json({ user, token });
+
+    // Remove the password field from the user object before sending the response
+    const userObject = user.toObject();
+    delete userObject.password;
+
+    return res.json({ user: userObject, token });
   } catch (err) {
     const error = new HttpError("Unknown Server Error", 500);
      const errorLog = new ErrorLogMessage({
