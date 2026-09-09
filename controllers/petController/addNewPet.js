@@ -27,9 +27,6 @@ const addNewPet = async (req, res, next) => {
     locationLastSeen,
   } = req.body;
 
-
-
-
   let user;
   let newPet;
   let locationLastSeenDoc;
@@ -65,12 +62,11 @@ const addNewPet = async (req, res, next) => {
       await locationLastSeenDoc.save({ session: sess });
     }
 
-       user = await User.findOne({ _id:userId });
+    user = await User.findOne({ _id: userId });
     if (!user) {
       await sess.abortTransaction();
       const error = new HttpError("User Not Found", 404);
       return res.status(404).json({ msg: error.message });
-
     }
 
     newPet = new Pet({
@@ -84,40 +80,39 @@ const addNewPet = async (req, res, next) => {
       status,
       dateLastSeen,
       locationLastSeen: locationLastSeenDoc ? locationLastSeenDoc : null,
+      dateFound: null,
     });
 
     await newPet.save({ session: sess });
-
- 
 
     user.pets.push(newPet);
     await user.save({ session: sess });
 
     await sess.commitTransaction();
     sess.endSession();
-  
+
     res.json(newPet);
     return;
-    } catch (err) {
+  } catch (err) {
     await sess.abortTransaction();
     sess.endSession();
-    const error = err instanceof HttpError
-      ? err
-      : new HttpError(err.message || "Unexpected Error", 500);
-      const errorLog = new ErrorLogMessage({
-          message: err.message,
-          component: "Add New Pet Controller Backend",
-          level: "error",
-          timestamp: new Date(),
-          notes: null,
-          currentSatus: "new",
-        });
-        await errorLog.save();
+    const error =
+      err instanceof HttpError
+        ? err
+        : new HttpError(err.message || "Unexpected Error", 500);
+    const errorLog = new ErrorLogMessage({
+      message: err.message,
+      component: "Add New Pet Controller Backend",
+      level: "error",
+      timestamp: new Date(),
+      notes: null,
+      currentSatus: "new",
+    });
+    await errorLog.save();
     return res.status(error.statusCode).json({ msg: error.message });
   }
 };
 
 export default addNewPet;
-
 
 //  photoIds: [`https://res.cloudinary.com/daxrovkug/image/upload/v1746460136/ktApp-petMainPic/${photoIds[0]}.jpg`],

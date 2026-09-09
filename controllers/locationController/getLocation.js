@@ -5,6 +5,8 @@ const getLocation = async (req, res, next) => {
   try {
     const { lat, lon } = req.params;
 
+    console.log(lat, lon);
+
     if (!lat || !lon) {
       const error = new HttpError('Latitude and longitude are required', 400);
       return res.status(400).json({ error: error.message });
@@ -38,7 +40,7 @@ const getLocation = async (req, res, next) => {
         });
         await errorLog.save();
         console.log("Error logged in database:", err);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: err });
   }
 };
 

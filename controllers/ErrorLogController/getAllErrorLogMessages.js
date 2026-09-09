@@ -2,7 +2,7 @@ import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 import HttpError from "../../httpError.js";
 
 
-const createErrorLogMessage = async (req, res, next) => {
+const getAllErrorLogMessages = async (req, res, next) => {
 
     try {
         let allMessages = await ErrorLogMessage.find().sort({ createdAt: -1 });
@@ -13,4 +13,4 @@ const createErrorLogMessage = async (req, res, next) => {
     }
 };
 
-export default createErrorLogMessage;
+export default getAllErrorLogMessages;
