@@ -6,7 +6,7 @@ import ErrorLogMessage from "../../schemas/errorLogMessageSchema.js";
 const getAllLostPets = async (req, res, next) => {
   const centerLon = Number(req.params.lon);
   const centerLat = Number(req.params.lat);
-  const radiusInMeters = Number(req.params.radius) || 5000; // Default radius 5km
+  const radiusInMeters = Number(15000; // Default radius 5km
   const earthRadius = 6378137;
   const radiusInRadians = radiusInMeters / earthRadius;
 
